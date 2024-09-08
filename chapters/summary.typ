@@ -1,20 +1,70 @@
 = Summary
 
+In this concluding chapter, the insights from @section_review and the key findings from the evaluation chapters are synthesized to address the two primary research questions of this study. Subsequently, a plan for future research is proposed to further explore and enhance the feasibility of adopting a micro frontend architecture for the @dklb project.
+
 == Conclusion
 
-TODO
+// - RQ1: How does adopting micro frontend architecture specifically affect the flexibility, maintainability, scalability and performance of a web application?
 
-This study is guided by the following primary research questions:
+A table outlining the advantages and disadvantages across the four aspects of flexibility, maintainability, scalability, and performance will be presented first.
 
-- How does adopting microfrontend architecture specifically affect the scalability, maintainability, flexibility, and performance of a web application?
+#{
+  show table.cell.where(x: 0): strong
+  show table.cell.where(y: 0): strong
+  show table.cell.where(y: 0): set align(center)
+  let flip = c => table.cell(align: horizon, rotate(-90deg, reflow: true)[#c])
 
-- Can the microfrontend approach effectively mitigate the specific challenges and limitations inherent in the current monolithic architecture of the @dklb project?
+  table(
+    columns: (auto, 1fr,1fr),
+    inset: 10pt,
+    [], [Advantages], [Disadvantages],
+ 
+    flip[Flexibility],
+    [
+      Independent development and deployment of frontend components, reducing downtime and enabling parallel work.
+    ],
+    [
+      Introduces added complexity, particularly in maintaining consistent functionality and ensuring a seamless user experience across the different micro frontends.
+    ],
 
+    flip[Maintainability],
+    [
+      Smaller, modular codebases improve maintainability, making it easier to manage, and onboard new developers.
+    ],
+    [
+      Managing multiple repositories or codebases can lead to fragmented maintenance efforts and potential duplication.
+    ],
+
+    flip[Scalability],
+    [
+      Enables independent scaling of specific frontend components, optimizing resource usage. 
+    ],
+    [
+      Potential for increased infrastructure overhead, as each micro frontend may require separate hosting and monitoring.
+    ],
+    
+    flip[Performance], 
+    [
+      More efficient loading, with the possibility to load only necessary parts of the application, improving user experience.
+    ],
+    [
+      Initial setup may be complex, with potential performance challenges around integration and communication between micro frontends.
+    ]
+  )
+}
+
+// - RQ2: Can the micro frontend approach effectively mitigate the specific challenges and limitations inherent in the current monolithic architecture of the @dklb project?
+
+The table above highlights that a micro frontend architecture can effectively address the challenges and limitations of the current monolithic system in the @dklb project. This approach introduces greater flexibility in development and deployment, while also improving maintainability and scalability for individual parts of the frontend. These characteristics align well with agile methodologies, promoting iterative development and enabling faster delivery.
+
+However, adopting a micro frontend architecture introduces additional complexity in management and monitoring, particularly in ensuring the seamless integration of components. The decentralized nature of this approach also necessitates further optimization to maintain satisfactory performance levels.
+
+In conclusion, micro frontend architecture offers a promising solution for large-scale web applications, providing significant benefits while presenting certain challenges. The decision to adopt this approach should be guided by the specific needs of the project, ensuring that the added complexities do not outweigh the advantages. In the case of the @dklb project, micro frontends represent a viable solution. Although this study has addressed key aspects of the web application development cycle, further detailed investigation is required to fully explore and optimize its potential.
 
 == Future Research
 
-The experiment effectively demonstrates how a microfrontend architecture could be adopted by the DKLB project, showcasing its potential in this context. However, to fully realize the benefits of this approach, several optimizations are necessary, particularly in bundle analysis. For instance, an examination of the network tab for the microfrontend application revealed duplicate dependencies, which contribute to an increased JavaScript payload size and, consequently, could impact performance.
+One necessary optimization is bundle analysis, which focuses on reducing duplicate code across JavaScript chunks, as these redundancies can negatively impact performance. To address this issue, gaining deeper knowledge of the Vite plugin could enable more precise intervention in its configuration, or alternatively, Rspack could be used as a replacement bundler due to its official support for Module Federation. This offers a significant advantage over Vite, which, at the time of writing, relies on a third-party plugin that is no longer actively maintained. The decision to adopt Rspack is further supported by its collaboration with the creator of Module Federation on the upcoming release of Module Federation 2.0, which promises new features, broader use cases, and enhanced performance.
 
-To address these issues, Rspack could be utilized as the bundler, given its official support for Module Federation. This contrasts with Vite, which currently relies on a third-party plugin that is no longer maintained. The choice of Rspack is further strengthened by its ongoing collaboration with the creator of Module Federation to release Module Federation 2.0, which is expected to introduce numerous features and performance enhancements. Additionally, Rolldown, the successor to Vite, is anticipated to enter public beta by the end of this year, offering native support for Module Federation as one of its key features. These advancements could significantly reduce the performance overhead typically associated with microfrontends, potentially bringing their efficiency closer to that of a monolithic architecture, thereby making the microfrontend approach more viable for the DKLB project.
+Additionally, improved error-handling mechanisms should be implemented. For example, when a horizontal micro frontend encounters an error, redirecting the user to an error page disrupts the experience, as only a portion of the view may be affected. A more refined approach would involve updating the overview configuration at runtime to control which micro frontends are displayed or hidden, allowing for greater flexibility and enabling more dynamic solutions.
 
 #pagebreak(weak: true)

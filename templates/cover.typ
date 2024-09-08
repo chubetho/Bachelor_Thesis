@@ -16,7 +16,7 @@
 
 #v(2em)
 
-#text(2em, weight: 700, "A Study on Microfrontend Architecture and Its Impact")
+#text(2em, weight: 700, [A Study on Micro Frontend Architecture and Its Impact])
 
 #v(2em)
 

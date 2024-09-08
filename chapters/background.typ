@@ -1,6 +1,6 @@
 = Background
 
-This chapter establishes the foundational concepts by first exploring monolithic architecture, the traditional approach to software design. The discussion then moves to the rise of microservices architecture, a significant paradigm shift in backend development that has significantly influenced modern software design. This exploration is extended to the frontend, where similar principles have been adopted. Finally, the chapter introduces the concept of Domain-Driven Design, with a particular focus on its application within the microfrontend architecture.
+This chapter establishes the foundational concepts by first exploring monolithic architecture, the traditional approach to software design. The discussion then moves to the rise of microservices architecture, a significant paradigm shift in backend development that has significantly influenced modern software design. This exploration is extended to the frontend, where similar principles have been adopted. Finally, the chapter introduces the concept of Domain-Driven Design, with a particular focus on its application within the micro frontend architecture.
 
 == Monolithic Architecture
 
@@ -37,26 +37,26 @@ Another key concept is that each microservice should maintain ownership of its s
 
 Furthermore, aligning the architecture with the organizational structure is essential for the success of microservices. Traditional architectures often mirror the communication patterns within an organization @conway_HOWCOMMITTEESINVENT_1968. In a microservices architecture, structuring teams around business domains promotes a end-to-end ownership of specific functionalities. With this alignment, teams take full responsibility for their services, from development to production, thereby enabling faster and more efficient development processes.
 
-== Microfrontends Architecture
+== Micro Frontend Architecture
 
-Microfrontends architecture applies the principles of microservices to frontend development. This concept was first introduced in the ThoughtWorks Technology Radar at the end of 2016 @_MicroFrontendsTechnology_, illustrating how the advantages gained from microservices in backend development can similarly be leveraged in the frontend.
+Micro frontend architecture applies the principles of microservices to frontend development. This concept was first introduced in the ThoughtWorks Technology Radar at the end of 2016 @_MicroFrontendsTechnology_, illustrating how the advantages gained from microservices in backend development can similarly be leveraged in the frontend.
 
 #figure(
   image("/assets/mono_ms_mfe.png"),
-  caption: [A monolithic application is transformed into one composed of microservices and microfrontends.]
+  caption: [A monolithic application is transformed into one composed of microservices and micro frontends.]
 ) <figure_mono_ms_mfe>
 
-The five key concepts of microservices, as they relate to microfrontends, will also be explored in this discussion.
+The five key concepts of microservices, as they relate to micro frontends, will also be explored in this discussion.
 
-In the context of microfrontends, independent deployability allows each section of the frontend to be developed, tested, and deployed independently of other sections. For example, if the team managing the product detail section needs to introduce a new feature or resolve a bug, they can deploy their changes without affecting the checkout or product recommendation sections.
+In the context of micro frontends, independent deployability allows each section of the frontend to be developed, tested, and deployed independently of other sections. For example, if the team managing the product detail section needs to introduce a new feature or resolve a bug, they can deploy their changes without affecting the checkout or product recommendation sections.
 
-Microfrontends should also mirror the structure of business domains. Building on concepts of @ddd, each microfrontend corresponds to a specific business function, such as a shopping cart, product catalog, or user authentication. This alignment ensures that changes to business logic are contained within a single microfrontend, simplifying updates and making the system more adaptable to evolving business requirements.
+Micro frontends should also mirror the structure of business domains. Building on concepts of @ddd, each micro frontend corresponds to a specific business function, such as a shopping cart, product catalog, or user authentication. This alignment ensures that changes to business logic are contained within a single micro frontend, simplifying updates and making the system more adaptable to evolving business requirements.
 
-Managing its own state within a microfrontend offers several benefits. It helps maintain loose coupling between different parts of the application. For instance, the shopping cart microfrontend exclusively manages what customers add to their cart, while the product catalog microfrontend controls the display of products. This approach simplifies data flow and makes debugging and testing more straightforward, as each microfrontend has clear boundaries for managing its data.
+Managing its own state within a micro frontend offers several benefits. It helps maintain loose coupling between different parts of the application. For instance, the shopping cart micro frontend exclusively manages what customers add to their cart, while the product catalog micro frontend controls the display of products. This approach simplifies data flow and makes debugging and testing more straightforward, as each micro frontend has clear boundaries for managing its data.
 
-The final key concept is that teams in a microfrontend architecture are organized around business domains, with each team taking full responsibility for the development of their respective microfrontend. This organizational structure minimizes the need for inter-team coordination and enhances the speed of decision-making processes without waiting for input or approval from other teams.
+The final key concept is that teams in a micro frontend architecture are organized around business domains, with each team taking full responsibility for the development of their respective micro frontend. This organizational structure minimizes the need for inter-team coordination and enhances the speed of decision-making processes without waiting for input or approval from other teams.
 
-It is important to note that microservices and microfrontends architectures may not be suitable for all types of backend and frontend applications due to the additional complexity they introduce at both technical and organizational levels. However, these approaches are particularly beneficial in scenarios where multiple teams must collaborate on the same application or when there is a need to gradually replace an existing legacy system.
+It is important to note that microservices and micro frontend architectures may not be suitable for all types of backend and frontend applications due to the additional complexity they introduce at both technical and organizational levels. However, these approaches are particularly beneficial in scenarios where multiple teams must collaborate on the same application or when there is a need to gradually replace an existing legacy system.
 
 == Domain-Driven Design <section_ddd>
 
@@ -73,6 +73,6 @@ A subdomain is a smaller, specific part within a domain, categorized into three 
 
 A bounded context is a defined boundary that separates subdomains within a specific portion of the domain. Within each bounded context, a unique ubiquitous language is used, which may differ from the languages employed in other contexts. In the example, there are two bounded contexts, both containing a subdomain named "detail," but with distinct purposes: one is used for displaying order details, while the other is for displaying product details. Despite these distinctions, relationships can exist between bounded contexts, such as when the order domain requires information from the product domain to process an order. These relationships and interactions between different bounded contexts are referred as context mapping.
 
-Understanding these concepts is essential for applying @ddd to microfrontends. Further details on how these concepts are implemented in microfrontends will be discussed in @section_decision_framework.
+Understanding these concepts is essential for applying @ddd to micro frontends. Further details on how these concepts are implemented in micro frontends will be discussed in @section_decision_framework.
 
 #pagebreak(weak: true)

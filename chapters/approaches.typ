@@ -1,16 +1,16 @@
 #import "@preview/glossarium:0.4.1": glspl 
 
-= Microfrontend Implementation Approaches
+= Micro Frontend Implementation Approaches
 
-Building on the Decision Framework outlined in the previous chapter, this section presents several commonly adopted approaches for implementing microfrontends. The effectiveness and challenges of these approaches often depend on the composition strategy they are paired with. As a result, general benefits and drawbacks will not be discussed here, except in cases where a specific approach has distinct characteristics.
+Building on the Decision Framework outlined in the previous chapter, this section presents several commonly adopted approaches for implementing micro frontends. The effectiveness and challenges of these approaches often depend on the composition strategy they are paired with. As a result, general benefits and drawbacks will not be discussed here, except in cases where a specific approach has distinct characteristics.
 
 For example, approaches involving server-side and edge-side composition will be demonstrated within the context of a horizontal-split architecture, while those using client-side composition will be examined through the perspective of a vertical-split architecture.
 
 == Server-Side Includes
 
-@ssi is a server-side scripting language often used in a server-side composition approach, where web pages are constructed on the server by fetching content from various microfrontends before delivering the final page to the user. @ssi accomplishes this by providing a set of specific directives within an HTML file, which the server processes to execute commands such as setting variables, printing the current date and time, or including common elements from other files, like headers or footers, within the page (@_IntroductionServerSide_). This capability makes @ssi particularly useful for maintaining consistency across multiple pages of a website.
+@ssi is a server-side scripting language often used in a server-side composition approach, where web pages are constructed on the server by fetching content from various micro frontends before delivering the final page to the user. @ssi accomplishes this by providing a set of specific directives within an HTML file, which the server processes to execute commands such as setting variables, printing the current date and time, or including common elements from other files, like headers or footers, within the page (@_IntroductionServerSide_). This capability makes @ssi particularly useful for maintaining consistency across multiple pages of a website.
 
-However, @ssi's utility is generally limited to simpler tasks, as it lacks the flexibility and power required for more complex website architectures. While @ssi is effective at including static components across multiple pages, it is not designed to support dynamic interactions between components within a single page. Since page composition occurs on the server side, any communication between different microfrontends within the view must be routed through the server, typically using REST APIs or similar server-side communication methods. Consequently, @ssi is better suited for basic page assembly tasks rather than for scenarios that demand complex, interactive user interfaces or real-time communication between components.
+However, @ssi's utility is generally limited to simpler tasks, as it lacks the flexibility and power required for more complex website architectures. While @ssi is effective at including static components across multiple pages, it is not designed to support dynamic interactions between components within a single page. Since page composition occurs on the server side, any communication between different micro frontends within the view must be routed through the server, typically using REST APIs or similar server-side communication methods. Consequently, @ssi is better suited for basic page assembly tasks rather than for scenarios that demand complex, interactive user interfaces or real-time communication between components.
 
 #figure(
   caption: [An example of using Server Side Includes.]
@@ -32,7 +32,7 @@ However, @ssi's utility is generally limited to simpler tasks, as it lacks the f
   ```
 ]
 
-Additionally, several frameworks are specifically designed to implement microfrontend architectures in combination with server-side composition, such as OpenComponents #footnote[https://opencomponents.github.io/], OneApp from American Express #footnote[https://github.com/americanexpress/one-app], Mosaic from Zalando #footnote[https://www.mosaic9.org/], and Podium #footnote[https://podium-lib.io/]. These frameworks offer more robust solutions for developing modular, scalable frontend applications.
+Additionally, several frameworks are specifically designed to implement micro frontend architectures in combination with server-side composition, such as OpenComponents #footnote[https://opencomponents.github.io/], OneApp from American Express #footnote[https://github.com/americanexpress/one-app], Mosaic from Zalando #footnote[https://www.mosaic9.org/], and Podium #footnote[https://podium-lib.io/]. These frameworks offer more robust solutions for developing modular, scalable frontend applications.
 
 == Edge-Side Includes
 
@@ -62,14 +62,14 @@ However, implementations can vary significantly, with some #glspl("cdn") not sup
 
 == iframe
 
-An iframe is an inline frame embedded within a webpage that allows the loading of a separate HTML document from different sources. It offers one of the highest levels of isolation within a browser, as it maintains its own context and resources independently from the parent document @_InlineFrameElement_2024. Because of this strong isolation, communication between iframes often relies on the `postMessage` method @_WindowPostMessageMethod_2024. Additionally, iframes are advantageous due to their ease of implementation, making them a common and intuitive choice when considering microfrontend architectures.
+An iframe is an inline frame embedded within a webpage that allows the loading of a separate HTML document from different sources. It offers one of the highest levels of isolation within a browser, as it maintains its own context and resources independently from the parent document @_InlineFrameElement_2024. Because of this strong isolation, communication between iframes often relies on the `postMessage` method @_WindowPostMessageMethod_2024. Additionally, iframes are advantageous due to their ease of implementation, making them a common and intuitive choice when considering micro frontend architectures.
 
 Despite the strong isolation benefits provided by iframes, their performance is often criticized by the community for being suboptimal and CPU-intensive, particularly on websites that use multiple iframes. This performance issue, combined with the difficulty of making iframes easily indexable by search engine crawlers, limits their suitability primarily to desktop or intranet applications, as demonstrated by Spotify's use of iframes in their desktop apps @engineering_BuildingFutureOur_2021. Additionally, accessibility concerns arise with iframes. While they can visually integrate seamlessly into a web application, they essentially represent separate small pages within a single view, which can pose significant challenges for accessibility tools like screen readers. These tools must navigate multiple documents, hierarchical information, and varying navigation states within a single page, complicating the user experience for individuals with disabilities.
 
-This method is a type of client-side composition. As explained in @section_decision_framework, this composition strategy starts with the browser downloading a shell application, which manages the loading and unloading of various microfrontends. As illustrated in figure below, the shell application determines the appropriate @html file path based on the current URL and assigns it as the source of the iframe element.
+This method is a type of client-side composition. As explained in @section_decision_framework, this composition strategy starts with the browser downloading a shell application, which manages the loading and unloading of various micro frontends. As illustrated in figure below, the shell application determines the appropriate @html file path based on the current URL and assigns it as the source of the iframe element.
 
 #figure(
-  caption: [An example of using iframe]
+  caption: [An example of using iframe.]
 )[
   ```html
   <!-- http://home.mfe/index.html -->
@@ -162,9 +162,9 @@ Module Federation, introduced in Webpack 5, is a feature of this popular JavaScr
 
 - Consuming Module: Known as the host application, this module can utilize exposed modules without needing to bundle them directly into its own codebase. As a result, if the exposed module is updated, the consuming application automatically integrates the latest version.
 
-Module Federation is an approach that can be seamlessly integrated with both vertical and horizontal splitting strategies, as well as with client-side or server-side composition. In a survey on microfrontends conducted in late 2023 @steyer_ConsequencesMicroFrontends_2023, Module Federation appeared as the most adopted approach, highlighting its effectiveness as a solution in modern web development.
+Module Federation is an approach that can be seamlessly integrated with both vertical and horizontal splitting strategies, as well as with client-side or server-side composition. In a survey on micro frontends conducted in late 2023 @steyer_ConsequencesMicroFrontends_2023, Module Federation appeared as the most adopted approach, highlighting its effectiveness as a solution in modern web development.
 
-Moreover, by enabling code sharing across different parts of an application, it significantly reduces duplication and decreases the overall size of the application bundle compared to iframe or Web Components. For instance, if multiple microfrontends rely on the same library, they can all access a single shared instance rather than bundling it separately in each module.
+Moreover, by enabling code sharing across different parts of an application, it significantly reduces duplication and decreases the overall size of the application bundle compared to iframe or Web Components. For instance, if multiple micro frontends rely on the same library, they can all access a single shared instance rather than bundling it separately in each module.
 
 However, Module Federation introduces certain complexities, particularly in managing the versions of shared modules across different applications. This process can be complex and requires careful configuration, especially in environments with multiple modules or complex dependency structures. The challenge is further expanded when dealing with commonly used modules that are widely consumed by other parts of the application. These modules must be cautiously managed and monitored to avoid becoming a single point of failure, as any changes to them can have widespread effects across the entire application ecosystem.
 
