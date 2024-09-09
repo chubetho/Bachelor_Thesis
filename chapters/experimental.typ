@@ -12,7 +12,7 @@ In this initial stage of the experiment, the current state of the backend for th
 
 === Backend
 
-Fortunately, the backend architecture of the @dklb is already organized as microservices, following to #gls("ddd", long: true) principles. In this context, domains such as user, games, and cart are clearly defined. For instance, the games domain is further divided into multiple core subdomains based on specific games. The `/lotto6aus49/**` path interacts exclusively with microservices dedicated to the Lotto game, while the `/eurojackpot/**` path engages with APIs associated with the Eurojackpot game. These distinct separations emphasize that each core subdomain focuses on the unique functionalities within the overall application.
+Fortunately, the backend architecture of the @dklb is already organized as microservices, following #gls("ddd", long: true) principles. In this context, domains such as user, games, and cart are clearly defined. For instance, the games domain is further divided into multiple core subdomains based on specific games. The `/lotto6aus49/**` path interacts exclusively with microservices dedicated to the Lotto game, while the `/eurojackpot/**` path engages with APIs associated with the Eurojackpot game. These distinct separations emphasize that each core subdomain focuses on the unique functionalities within the overall application.
 
 However, to ensure the experiment is comprehensive, a mocked server that simulates the backend will be set up to handle requests from the micro frontends. While this server could be built using a web framework in any programming language, a JavaScript-based framework will be used to minimize additional setup efforts and maintain consistency with the frontend technologies.
 
@@ -28,19 +28,19 @@ Module Federation has been chosen for its significant potential in the developme
 
 In this experiment, client-side composition will be chosen because the potential development teams at MULTA MEDIO are already familiar with @spa development. Additionally, if the application later requires enhanced @seo, faster load times, or improved performance, transitioning from client-side to server-side composition will be straightforward, given that Module Federation already supports this capability. Further details regarding client-side routing will be discussed during the implementation stage.
 
-For enabling communication between micro frontends, any methods outlined in @fundamental_communication will be effective. These methods can be easily opted in or out, without need for upfront planning.
+For enabling communication between micro frontends, any methods outlined in @fundamental_communication will be effective. These methods can be easily opted in or out, without the need for upfront planning.
 
 == Setup Stage
 
-The setup stage will concentrate on selecting the appropriate tools and technologies required for the new frontend architecture. This involves choosing frameworks and libraries, as well as setting up deployment environments and defining the project structure.
+The setup stage will concentrate on selecting the appropriate tools and technologies required for the new frontend architecture. This involves choosing frameworks and libraries, as well as setting up deployment environments, and defining the project structure.
 
 === Tools for Development
 
-- Vue.js: It is a progressive JavaScript framework used for building user interfaces. It is highly adaptable, supporting for the creation of both simple and complex applications through its reactive and component-based architecture. This design facilitates the development of a modular and scalable frontend @_VueJS_.
+- Vue.js: It is a progressive JavaScript framework used for building user interfaces. It is highly adaptable, supporting the creation of both simple and complex applications through its reactive and component-based architecture. This design facilitates the development of a modular and scalable frontend @_VueJS_.
 
 - Tailwind CSS: It is a utility-first CSS framework designed to facilitate the rapid development of custom user interfaces. By utilizing utility classes, it enables developers to style elements efficiently, minimizing the need for extensive custom CSS and preventing CSS class collisions, particularly in the context of micro frontend architecture. This methodology results in cleaner, more maintainable code, aligning well with Vue.js's modular structure @_TailwindCSS_.
 
-- Vite: It is a modern build tool that significantly enhances the development experience. It provides a fast and efficient setup, offering features like instant server start, hot module replacement, and optimized build processes. This tool integrates seamlessly with Vue.js and Tailwind CSS, improving development speed and efficiency, making it an ideal choice for modern web projects @_Vite_. Also there is a plugin for Vite that enable Module Federation feature for Vite @_OriginjsVitepluginfederation_2024.
+- Vite: It is a modern build tool that significantly enhances the development experience. It provides a fast and efficient setup, offering features like instant server start, hot module replacement, and optimized build processes. This tool integrates seamlessly with Vue.js and Tailwind CSS, improving development speed and efficiency, making it an ideal choice for modern web projects @_Vite_. Also, there is a plugin for Vite that enables the Module Federation feature for Vite @_OriginjsVitepluginfederation_2024.
 
 - ElysiaJS: It is a web framework that enables developers to set up routes for handling different HTTP requests, making it ideal for building Restful APIs. With its robust set of features, ElysiaJS allows for the efficient and maintainable development of applications, effectively mimicking a backend server to serve API endpoints in this experiment @_Elysia_. However, since this is primarily for simulation purposes, other web frameworks like Express.js or Fastify could also be used effectively.
 
@@ -62,14 +62,14 @@ The setup stage will concentrate on selecting the appropriate tools and technolo
 
 === Monorepo Strategy
 
-In software development, there are two repository strategies: monorepo and polyrepo. A monorepo architecture stores code for multiple projects using a single repository. For example, a monorepo repository contains three folders, one for web app project, one for mobile app project and one for a server app project. In contrast, a polyrepo approach uses multiple repositories for each project @henderson_Monorepovspolyrepo_2024.
+In software development, there are two repository strategies: monorepo and polyrepo. A monorepo architecture stores code for multiple projects using a single repository. For example, a monorepo repository contains three folders, one for a web app project, one for a mobile app project, and one for a server app project. In contrast, a polyrepo approach uses multiple repositories for each project @henderson_Monorepovspolyrepo_2024.
 
-In this experiment a monorepo strategy will be employed. This approach involves storing all micro frontends, UI library, toolings and server application a single repository, simplifying the setup stage, especially within the scope of this experiment.
+In this experiment, a monorepo strategy will be employed. This approach involves storing all micro frontends, a UI library, toolings, and a server application in a single repository, simplifying the setup stage, especially within the scope of this experiment.
 
 Aligning with the monorepo strategy, the project structure is designed to ensure clarity and scalability. The structure is organized into several key directories, each serving a specific purpose. Below is an overview of the project structure:
 
 #grid(
-  columns: (1fr, 2fr),
+  columns: (1.03fr, 2fr),
   gutter: 10pt,
   [
     #figure(caption: "Project structure in the experiment.")[
@@ -92,7 +92,6 @@ Aligning with the monorepo strategy, the project structure is designed to ensure
       |
       ├── tools
       |   ├── tailwindcss
-      |   └── typescript
       |   └── ...
       |
       └── ...
@@ -101,15 +100,15 @@ Aligning with the monorepo strategy, the project structure is designed to ensure
   ]
  ,
   [
-    - apps: This directory contains the main host, known as shell application (`shell`), which integrates and manges remotes, referred as micro frontends, such as `home` and `lotto`. Each remote, along with the host, is developed and maintained within its own subdirectory.
+    - apps: This directory contains the host, known as shell application (`shell`), which integrates and manages remotes, referred to as micro frontends, such as `home` and `lotto`. Each remote, along with the host, is developed and maintained within its own subdirectory.
 
-    - packages: Here stores shared logics and resources, such as the `ui` library or `mfe-config`, an overview configuration file for all micro frontends and the host application. These shared packages ensure consistent styling and functionality throughout the project.
+    - packages: Here stores shared logic and resources, such as the `ui` library or `mfe-config`, an overview configuration file for all applications. These shared packages ensure consistent styling and functionality throughout the project.
 
     - server: This folder houses the server application, which acts as a simulated backend, processing requests from the micro frontends.
 
-    - e2e: Here are end-to-end tests for the application, which are an important part of the continuos integration pipeline.
+    - e2e: Here are end-to-end tests for the application, which are an important part of the continuous integration pipeline.
 
-    - tools: This directory holds based configurations for development dependencies, including Typescript, ESLint or Tailwind CSS, which will be later included where needed. 
+    - tools: This directory holds based configurations for development dependencies such as Tailwind CSS.
   ]
 )
 
@@ -141,7 +140,6 @@ In the vite configuration shown in @figure_vite_config_shell, `@originjs/vite-pl
 ] <figure_vite_config_shell>
 
 #pagebreak()
-  
 - For remote applications (`home` and `lotto`)
 
 As outlined in the configuration for the host application (@figure_vite_config_shell) the `home_app` is configured to run on port `8001`, while the `lotto_app` is set to run on port `8002`. Both remote applications also use the `@originjs/vite-plugin-federation` plugin to expose their respective `App` components from their source directories (@figure_vite_config_home_and_lotto). These `App` components can later be imported and displayed, for example, using `import HomeApp from 'home_app/App'`.
@@ -288,7 +286,6 @@ Vue Router supports lazy loading of components using the promise syntax. For exa
       },
       {
         path: '/:pathMatch(.*)*',
-        name: 'Error',
         component: () => import('./pages/Error.vue'),
       },
     ],
@@ -298,7 +295,7 @@ Vue Router supports lazy loading of components using the promise syntax. For exa
 
 === Micro Frontends
 
-The implementation of each micro frontend is straightforward and aligns with the development of normal single-page application. For instance, the `App.vue` component in the `home` micro frontend might contain a simple heading displaying "Homepage". When a user navigates to the homepage, Vue Router loads this template into the `App` component of the `shell` application, producing the result shown below.
+The implementation of each micro frontend is straightforward and aligns with the development of a normal single-page application. For instance, the `App.vue` component in the `home` micro frontend might contain a simple heading displaying "Homepage". When a user navigates to the homepage, Vue Router loads this template into the `App` component of the `shell` application, producing the result shown below.
 
 #figure(
   caption: [The `App` component of the `shell` application after the `home` is loaded.]
@@ -325,7 +322,7 @@ The implementation of each micro frontend is straightforward and aligns with the
 
 The UI library must be designed to be minimal, highly extensible, and independent of any specific location within the application, ensuring its effectiveness and usability across various parts of the system.
 
-As shown in @figure_button_ui_with_customized, a basic `UiButton` component is implemented as a simple HTML button element with predefined Tailwind CSS classes and no context-specific logic. If the home micro frontend requires a customized button, it can create a wrapper around this component to extend its own styles, as demonstrated by the `HomeButton` component.
+As shown in @figure_button_ui_with_customized, a basic `UiButton` component is implemented as a simple HTML button element with predefined Tailwind CSS classes and no context-specific logic. If the home micro frontend requires a customized button, it can create a wrapper around this component to extend its styles, as demonstrated by the `HomeButton` component.
 
 #figure(
   caption: [The `UiButton` component and its wrapper `HomeButton`.]
@@ -364,15 +361,11 @@ The server application is configured to listen on port `3000` and only accepts r
    const app = new Elysia()
     .derive(({ request }) => {
       const origin = request.headers.get('origin')
-      if(origin === 'http://localhost:8000')
-        return { authorized: true }
-        
-      return { authorized: false }
+      return { authorized: origin === 'http://localhost:8000' }
     })
     .use(
       cors({
-        origin: /http:\/\/localhost:8000/,
-        allowedHeaders: ['Content-Type'],
+        origin: /http:\/\/localhost:8000/
       }),
     )
     .listen(3000)
@@ -408,7 +401,7 @@ The path `/lotto6aus49` alone is insufficient to fully represent the entire subd
 Additionally, the `lotto` micro frontend must expose its corresponding components for these new routes, ensuring that the correct components are available to be loaded and displayed by the host application.
 
 #figure(
-  caption: "Vite configuration for lotto microfrontend with more exposed components.",
+  caption: [Vite configuration for lotto micro frontend with more exposed components.],
 )[
 ```ts
 // apps/lotto/vite.config.ts
@@ -427,10 +420,11 @@ export default defineConfig({
 ```
 ]
 
-These routes share the prefix `/lotto6aus49`, which suggests that a separate Vue Router instance should ideally be created within the `lotto` micro frontend to manage its own nested routes. This approach would allow the host application's router to register only the top-level routes for its remotes, while deeper-level routing would be handled within each micro frontend. However, this approach is not feasible under the current Module Federation setup. In this architecture, only a single instance of Vue is created within the host application, which utilizes the router defined in @figure_shell_router. Consequently, no additional Vue or Vue Router instance exists within the `lotto` micro frontend to manage nested routing independently.
+These routes share the prefix `/lotto6aus49`, which suggests that a separate Vue Router instance should ideally be created within the `lotto` micro frontend to manage its nested routes. This approach would allow the host application's router to register only the top-level routes for its remotes, while deeper-level routing would be handled within each micro frontend. However, this approach is not feasible under the current Module Federation setup. In this architecture, only a single instance of Vue is created within the host application, which utilizes the router defined in @figure_shell_router. Consequently, no additional Vue or Vue Router instance exists within the `lotto` micro frontend to manage nested routing independently.
 
 However, if a new route is now required to display instructions for the Lotto game, or if an existing route, such as the one for displaying results, needs to be removed, similar steps must be repeated to achieve the desired outcome. This repetition not only increases the potential for errors but also indicates a poor developer experience. Therefore, a more automated solution is desirable, which would involve creating a mechanism where routes can be dynamically registered and managed without the need for extensive manual input.
 
+#pagebreak()
 === Routing Solution
 
 1. Overview configuration
@@ -527,6 +521,7 @@ In the context of the `lotto` micro frontend, its folder structure is illustrate
 
 ] <figure_folder_structure_lotto>
 
+#pagebreak()
 3. Automated Routes Registration
 
 The final step in this routing solution is the automated registration of routes. With the overview configuration established in the first step and the details about the exposed components of each micro frontend obtained in the second step, the host application's router can now iterate through the overview configuration, reading the corresponding `routes.json` file and then process compiles a flat array of all possible routes within the application.
@@ -556,7 +551,7 @@ As illustrated in the dependencies graph below, the UI library must be built bef
 
 == Testing Stage
 
-Testing stage is focused on verifying the functionality and reliability of the application, ensuring that all components operate as expected before deploying to production. In this experiment, two types of testing will be covered: unit testing and end-to-end testing.
+The testing stage is focused on verifying the functionality and reliability of the application, ensuring that all components operate as expected before deploying to production. In this experiment, two types of testing will be covered: unit testing and end-to-end testing.
 
 === Unit Testing
 
@@ -585,9 +580,9 @@ Unit testing focuses on the smallest testable parts of the application, such as 
 ]
 === End-to-End Testing
 
-End-to-End (E2E) testing is a comprehensive method for evaluating the entire workflow of an application. Unlike unit tests, which focus on isolating components within a simulated environment, E2E testing replicates user interactions in a production-like setting to ensure that the system meets its requirements and functions as expected. Below is a basic E2E test intended to validate the navigation workflow.
+End-to-end (E2E) testing is a comprehensive method for evaluating the entire workflow of an application. Unlike unit tests, which focus on isolating components within a simulated environment, E2E testing replicates user interactions in a production-like setting to ensure that the system meets its requirements and functions as expected. Below is a basic E2E test intended to validate the navigation workflow.
 
-#figure(caption: "Simple E2E test to test the navigation workflow.")[
+#figure(caption: [Simple E2E test to test the navigation workflow.])[
   ```ts
   // e2e/tests/app.test.ts
   test('Navigation', async ({ page }) => {
@@ -632,11 +627,11 @@ The Dockerfile of the server application defines a two-stage build process. In t
 
 === Containers for Micro Frontends
 
-To avoid the problems related with manual management, particularly regarding routing issues during the implementation phase, an automated approach for generating Dockerfiles based on the overview configuration is preferred. This approach involves two steps: first, generating an Nginx configuration file for both the host and remote applications, and second, creating a corresponding Dockerfile for each of these applications.
+To avoid the problems related to manual management, particularly regarding routing issues during the implementation phase, an automated approach for generating Dockerfiles based on the overview configuration is preferred. This approach involves two steps: first, generating an Nginx configuration file for both the host and remote applications, and second, creating a corresponding Dockerfile for each of these applications.
 
 1. Nginx configurations
 
-Firstly, @cors headers must be appended to each nginx configuration of remote applications. This step is essential to guarantee that only requests originating from the host application are permitted and also prevents any CORS-related issues. Secondly, the host's nginx configuration is configured to always attempt to load the `/index.html` file, regardless of the URI requested. Without this configuration, the nginx server may return a "Not found" error for requests that do not explicitly point to existing resources.
+Firstly, @cors headers must be appended to each nginx configuration of remote applications. This step is essential to guarantee that only requests originating from the host application are permitted and also prevent any CORS-related issues. Secondly, the host's nginx configuration is configured to always attempt to load the `/index.html` file, regardless of the URI requested. Without this configuration, the nginx server may return a "Not found" error for requests that do not explicitly point to existing resources.
 
 #figure(caption: [Generation of `nginx.conf` files based on the overview configuration.])[
 ```ts
@@ -693,7 +688,7 @@ The process of generating Dockerfiles for each micro frontend can be seamlessly 
 
 === Docker Compose
 
-The final step in this deployment section involves using docker compose, a convenient tool for simplifying the process by allowing to define and run multiples docker container.
+The final step in this deployment section involves using docker-compose, a convenient tool for simplifying the process by allowing to define and run multiple docker containers.
 
 The server application's service is first defined, specifying the location of its Dockerfile and the port it will run on. Following this, the overview configuration is looped through again to generate service definitions for each micro frontend. These definitions include the service name, relevant build settings, and necessary port mappings. The script also ensures that each micro frontend service waits for the server to start, maintaining the correct initialization sequence. Once all configurations are defined, they are written into a `docker-compose.yml` file.
 
@@ -730,9 +725,9 @@ This Docker-based strategy enables the @dklb application to be easily deployed o
 
 === Other Containerization Approach
 
-In the containerization approach implemented above, each micro frontend is deployed in its own container. This design, while flexible, results in increased memory usage, as the memory requirements scale with the number of micro frontend containers. An alternative is to run the host application and all micro frontends only within a single container. As illustrated in @figure_docker_desktop, the multi-container approach requires around 27MB of memory, whereas the single-container approach needs only about 9MB for the entire frontend. This reduction in memory usage can be advantageous in resource-constrained environments.
+In the containerization approach implemented above, each micro frontend is deployed in its container. This design, while flexible, results in increased memory usage, as the memory requirements scale with the number of micro frontend containers. An alternative is to run the host application and all micro frontends only within a single container. As illustrated in @figure_docker_desktop, the multi-container approach requires around 27MB of memory, whereas the single-container approach needs only about 9MB for the entire frontend. This reduction in memory usage can be advantageous in resource-constrained environments.
 
-However, the single-container approach has trade-offs. Redeploying a micro frontend in this setup can be more cumbersome, as developers must apply the necessary changes, rebuild the micro frontend, push the built assets to the correct directory in the container, responsible for that micro frontend. In some scenarios, this might even require taking down the entire container, leading to downtime for the whole application. On the other hand, with the multi-container approach, individual containers can be stopped and restarted independently, allowing updates to specific micro frontends without disrupting the entire system. This independence reduces the operational burden on developers and can minimize application downtime.
+However, the single-container approach has trade-offs. Redeploying a micro frontend in this setup can be more cumbersome, as developers must apply the necessary changes, rebuild the micro frontend, and push the built assets to the correct directory in the container, responsible for that micro frontend. In some scenarios, this might even require taking down the entire container, leading to downtime for the whole application. On the other hand, with the multi-container approach, individual containers can be stopped and restarted independently, allowing updates to specific micro frontends without disrupting the entire system. This independence reduces the operational burden on developers and can minimize application downtime.
 
 Several deployment strategies are available that can optimize the deployment process and effectively address the issues previously mentioned. One such strategy is blue-green deployment, which involves the use of two identical production environments, referred to as blue and green. The blue environment handles live traffic, while the green environment remains idle or is used for staging new releases. When a new version is ready, it is deployed to the green environment. After comprehensive testing, traffic is switched to the green environment, allowing for seamless updates. Should any issues arise, traffic can be reverted to the blue environment. This approach ensures minimal downtime during deployments, enhances reliability, and offers quick rollback capabilities @fowler_BlueGreenDeployment_2013.
 

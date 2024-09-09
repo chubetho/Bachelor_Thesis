@@ -4,7 +4,7 @@ In this concluding chapter, the insights from @section_review and the key findin
 
 == Conclusion
 
-// - RQ1: How does adopting micro frontend architecture specifically affect the flexibility, maintainability, scalability and performance of a web application?
+// - RQ1: How does adopting micro frontend architecture specifically affect the flexibility, maintainability, scalability, and performance of a web application?
 
 A table outlining the advantages and disadvantages across the four aspects of flexibility, maintainability, scalability, and performance will be presented first.
 
@@ -63,7 +63,7 @@ In conclusion, micro frontend architecture offers a promising solution for large
 
 == Future Research
 
-One necessary optimization is bundle analysis, which focuses on reducing duplicate code across JavaScript chunks, as these redundancies can negatively impact performance. To address this issue, gaining deeper knowledge of the Vite plugin could enable more precise intervention in its configuration, or alternatively, Rspack could be used as a replacement bundler due to its official support for Module Federation. This offers a significant advantage over Vite, which, at the time of writing, relies on a third-party plugin that is no longer actively maintained. The decision to adopt Rspack is further supported by its collaboration with the creator of Module Federation on the upcoming release of Module Federation 2.0, which promises new features, broader use cases, and enhanced performance.
+One necessary optimization is bundle analysis, which focuses on reducing duplicate code across JavaScript chunks, as these redundancies can negatively impact performance. To address this issue, gaining deeper knowledge of the Vite plugin could enable more precise intervention in its configuration, or Rspack could be used as a replacement bundler due to its official support for Module Federation. This offers a significant advantage over Vite, which, at the time of writing, relies on a third-party plugin that is no longer actively maintained. The decision to adopt Rspack is further supported by its collaboration with the creator of Module Federation on the upcoming release of Module Federation 2.0, which promises new features, broader use cases, and enhanced performance.
 
 Additionally, improved error-handling mechanisms should be implemented. For example, when a horizontal micro frontend encounters an error, redirecting the user to an error page disrupts the experience, as only a portion of the view may be affected. A more refined approach would involve updating the overview configuration at runtime to control which micro frontends are displayed or hidden, allowing for greater flexibility and enabling more dynamic solutions.
 

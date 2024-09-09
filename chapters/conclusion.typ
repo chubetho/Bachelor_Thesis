@@ -19,7 +19,7 @@ The table below outlines the key differences in the development cycle between th
     columns: (auto, 1fr, 1fr),
     inset: 10pt,
     align: (top, left),
-    table.header([], align(center, "Microfrontends"), align(center, "Monolithic SPA")),
+    table.header([], align(center, [Micro frontends]), align(center, [Monolithic SPA])),
     
     flip[Setup Stage],
     [
@@ -98,9 +98,9 @@ However, this flexibility introduces complexity in maintaining unified functiona
 
 === Maintainability
 
-The frontend is divided into `home` and `lotto` modules, with each module located in its own directory. This modular structure simplifies the management and maintenance of the overall system by allowing developers to focus on specific micro frontends without needing to understand the entire application. This approach makes on-boarding new developers more efficient, as they can work on individual components without having to grasp the full scope from the beginning. It also reduces the likelihood of introducing unintentional bugs or inconsistencies when making changes.
+The frontend is divided into `home` and `lotto` modules, with each module located in its directory. This modular structure simplifies the management and maintenance of the overall system by allowing developers to focus on specific micro frontends without needing to understand the entire application. This approach makes onboarding new developers more efficient, as they can work on individual components without having to grasp the full scope from the beginning. It also reduces the likelihood of introducing unintentional bugs or inconsistencies when making changes.
 
-This separation, though beneficial, can result in redundancy in certain areas. For instance, shared logic, such as the fetch function used to retrieve gaming history quotes, might be duplicated across multiple micro frontends, which violates the DRY (Don't Repeat Yourself) principle. Additionally, maintaining consistency becomes more challenging, as refactoring or updating shared logic may not always be synchronized across all micro frontends. This can lead to potential lack of similarity and increased maintenance efforts over time.
+This separation, though beneficial, can result in redundancy in certain areas. For instance, shared logic, such as the fetch function used to retrieve gaming history quotes, might be duplicated across multiple micro frontends, which violates the DRY (Don't Repeat Yourself) principle. Additionally, maintaining consistency becomes more challenging, as refactoring or updating shared logic may not always be synchronized across all micro frontends. This can lead to a potential lack of similarity and increased maintenance efforts over time.
 
 === Scalability
 
@@ -123,12 +123,11 @@ To further evaluate performance, the open-source tool Sitespeed.io is used to an
   let tyellow = c => text(weight: "bold", fill: rgb(225,164,0), c)
   show table.cell.where(y: 0): strong
   show table.cell.where(x: 0): strong
-  show table.cell.where(y: 0): smallcaps
   
   figure(
     caption: [Comparison between the micro frontends and monolithic SPA versions.],
     table(
-      columns: (2fr, 1fr, 1fr),
+      columns: (1.5fr, 1fr, 1fr),
       inset: 10pt,
       align: left,
       table.header([], [Micro frontends], [Monolithic SPA]),
@@ -146,6 +145,7 @@ To further evaluate performance, the open-source tool Sitespeed.io is used to an
     ),
   )
 }
+#v(1em)
 
 An important metric to consider is the JavaScript Transfer Size, which accounts for approximately 85-90% of the Total Transfer Size. In the micro frontends implementation, this transfer size is nearly double that of the @spa version, leading to longer page load times. The primary reason for this increase is the requirement for the host application to fetch the `remoteEntry.js` files from its remote modules. These entry files play a crucial role in Module Federation, containing essential information about the remote module, such as its name and the components it exposes @_ModuleFederation_. This additional overhead can slow down the initial load, as the host must retrieve and process these files to properly display the micro frontends and manage their interactions.
 

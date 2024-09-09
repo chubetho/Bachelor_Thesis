@@ -2,11 +2,11 @@
 #import "utils/header.typ": getHeader
 
 #set document(
-  title: "A Study on Micro Frontend Architecture and Its Impact", 
+  title: [A Study on Micro Frontend Architecture and Its Impact], 
   author: "Tan Phat Nguyen"
 )
 
-#set text(font: "New Computer Modern Sans", lang: "en", size: 12pt)
+#set text(font: "New Computer Modern", lang: "en", size: 12pt)
 
 #include "templates/cover.typ"
 

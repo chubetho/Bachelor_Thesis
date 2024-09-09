@@ -66,7 +66,7 @@ An iframe is an inline frame embedded within a webpage that allows the loading o
 
 Despite the strong isolation benefits provided by iframes, their performance is often criticized by the community for being suboptimal and CPU-intensive, particularly on websites that use multiple iframes. This performance issue, combined with the difficulty of making iframes easily indexable by search engine crawlers, limits their suitability primarily to desktop or intranet applications, as demonstrated by Spotify's use of iframes in their desktop apps @engineering_BuildingFutureOur_2021. Additionally, accessibility concerns arise with iframes. While they can visually integrate seamlessly into a web application, they essentially represent separate small pages within a single view, which can pose significant challenges for accessibility tools like screen readers. These tools must navigate multiple documents, hierarchical information, and varying navigation states within a single page, complicating the user experience for individuals with disabilities.
 
-This method is a type of client-side composition. As explained in @section_decision_framework, this composition strategy starts with the browser downloading a shell application, which manages the loading and unloading of various micro frontends. As illustrated in figure below, the shell application determines the appropriate @html file path based on the current URL and assigns it as the source of the iframe element.
+This method is a type of client-side composition. As explained in @section_decision_framework, this composition strategy starts with the browser downloading a shell application, which manages the loading and unloading of various micro frontends. As illustrated in the figure below, the shell application determines the appropriate @html file path based on the current URL and assigns it as the source of the iframe element.
 
 #figure(
   caption: [An example of using iframe.]
@@ -101,9 +101,9 @@ This method is a type of client-side composition. As explained in @section_decis
 
 == Web Components
 
-Web components are a collection of web platform APIs that enable developers to create reusable and encapsulated custom elements. These components are based on three key specifications: Custom Elements, Shadow DOM and HTML Templates @_WebComponentsWeb_2024.
+Web components are a collection of web platform APIs that enable developers to create reusable and encapsulated custom elements. These components are based on three key specifications: Custom Elements, Shadow DOM, and HTML Templates @_WebComponentsWeb_2024.
 
-- Custom Elements: This set of JavaScript APIs allows developers to define their own HTML elements with custom behaviors. Once defined, these elements can be used just like standard HTML tags.
+- Custom Elements: This set of JavaScript APIs allow developers to define their own HTML elements with custom behaviors. Once defined, these elements can be used just like standard HTML tags.
 
 - Shadow DOM: Another set of JavaScript APIs provides encapsulation by creating a hidden context, a shadow DOM, that includes the internal structure, styles, and behavior of the component. This encapsulation ensures that the component is isolated from the rest of the main DOM, preventing style and script conflicts.
 
@@ -154,17 +154,19 @@ Web components are primarily intended for client-side composition, where they ar
   ```
 ]
 
+#pagebreak()
+
 == Module Federation
 
 Module Federation, introduced in Webpack 5, is a feature of this popular JavaScript bundler that enables different parts of an application to be treated as separate modules. These modules can be shared and used by other parts of the application at runtime @_Webpack_ @_ModuleFederation_. There are two types of modules: 
 
 - Exposed Module: Also referred to as a remote application, this is a module that is made available for other applications to consume. It can change its behavior at runtime and is typically defined to provide resources such as a component library or utility functions to other parts of the application.
 
-- Consuming Module: Known as the host application, this module can utilize exposed modules without needing to bundle them directly into its own codebase. As a result, if the exposed module is updated, the consuming application automatically integrates the latest version.
+- Consuming Module: Known as the host application, this module can utilize exposed modules without needing to bundle them directly into its codebase. As a result, if the exposed module is updated, the consuming application automatically integrates the latest version.
 
 Module Federation is an approach that can be seamlessly integrated with both vertical and horizontal splitting strategies, as well as with client-side or server-side composition. In a survey on micro frontends conducted in late 2023 @steyer_ConsequencesMicroFrontends_2023, Module Federation appeared as the most adopted approach, highlighting its effectiveness as a solution in modern web development.
 
-Moreover, by enabling code sharing across different parts of an application, it significantly reduces duplication and decreases the overall size of the application bundle compared to iframe or Web Components. For instance, if multiple micro frontends rely on the same library, they can all access a single shared instance rather than bundling it separately in each module.
+Moreover, enabling code sharing across different parts of an application, significantly reduces duplication and decreases the overall size of the application bundle compared to iframe or Web Components. For instance, if multiple micro frontends rely on the same library, they can all access a single shared instance rather than bundling it separately in each module.
 
 However, Module Federation introduces certain complexities, particularly in managing the versions of shared modules across different applications. This process can be complex and requires careful configuration, especially in environments with multiple modules or complex dependency structures. The challenge is further expanded when dealing with commonly used modules that are widely consumed by other parts of the application. These modules must be cautiously managed and monitored to avoid becoming a single point of failure, as any changes to them can have widespread effects across the entire application ecosystem.
 
