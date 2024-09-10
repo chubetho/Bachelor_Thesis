@@ -2,7 +2,7 @@
 
 = Experiment <section_experiment>
 
-In this chapter, a detailed experiment will be conducted, simulating the entire development cycle of a web application using micro frontend architecture across several stages: planning, setup, implementation, build, deployment, testing, as well as continuous integration and deployment. Each stage will be closely monitored to gather comprehensive insights into this architecture. Additionally, a single-page application version of the same application, derived from the micro frontends version, will be implemented to compare performance metrics and evaluate the overall system behavior of both approaches in the next chapter. The primary goal is to provide a deep understanding of the micro frontend approach, highlighting its potential benefits and drawbacks. Furthermore, optimizations for enhancing the developer experience will be discussed after the development cycle.
+In this chapter, a detailed experiment will be conducted, simulating the entire development cycle of a web application using micro frontend architecture across several stages: planning, setup, implementation, build, deployment, testing, as well as @ci and @cd. Each stage will be closely monitored to gather comprehensive insights into this architecture. Additionally, a single-page application version of the same application, derived from the micro frontends version, will be implemented to compare performance metrics and evaluate the overall system behavior of both approaches in the next chapter. The primary goal is to provide a deep understanding of the micro frontend approach, highlighting its potential benefits and drawbacks. Furthermore, optimizations for enhancing the developer experience will be discussed after the development cycle.
 
 Note that the code examples presented in this chapter may differ from the actual code. For accurate and precise code, refer to the GitHub repository at @nguyen_DKLB_2024.
 
@@ -57,8 +57,6 @@ The setup stage will concentrate on selecting the appropriate tools and technolo
 - Vitest: It is a highly efficient testing framework built on top of Vite, designed to facilitate the writing and execution of unit tests. By utilizing Vitest, developers can ensure that each component behaves as intended, helping to maintain the overall reliability of the software @_Vitest_.
 
 - Playwright: It is an essential tool for end-to-end testing, addressing aspects of application quality that go beyond what unit tests with Vitest can achieve by allowing for comprehensive testing of the entire application, simulating real-world user interactions across different browsers. Playwright helps to identify issues that might only arise when the entire system is in use, making it an important tool for maintaining the overall quality and stability of a web application @_Playwright_.
-
-#pagebreak()
 
 === Monorepo Strategy
 
@@ -800,7 +798,7 @@ After completing the code integration, the focus shifts to automated deployment.
   ```
 ]
 
-
+#pagebreak()
 == Developer Workflow Optimization 
 
 To enhance the developer workflow, a scaffold script is implemented to streamline the creation of new micro frontend applications. Initially, a `.template` directory is established to store the templates for the micro frontend application and the pipeline configuration file. Following this, a lightweight command line interface (CLI) is implemented to prompt the developer for the location and prefix of the micro frontend. The corresponding Dockerfile is then generated, and necessary updates are made to the `docker-compose.yml` file. Finally, the script asks whether to install dependencies or perform the build process.

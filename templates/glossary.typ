@@ -13,7 +13,7 @@
     (
       key: "spa", 
       short: "SPA", 
-      long: "Single Page Application", 
+      long: "Single-Page Application", 
     ),  
     (
       key: "seo", 

@@ -4,8 +4,6 @@ In this concluding chapter, the insights from @section_review and the key findin
 
 == Conclusion
 
-// - RQ1: How does adopting micro frontend architecture specifically affect the flexibility, maintainability, scalability, and performance of a web application?
-
 A table outlining the advantages and disadvantages across the four aspects of flexibility, maintainability, scalability, and performance will be presented first.
 
 #{
@@ -52,8 +50,6 @@ A table outlining the advantages and disadvantages across the four aspects of fl
     ]
   )
 }
-
-// - RQ2: Can the micro frontend approach effectively mitigate the specific challenges and limitations inherent in the current monolithic architecture of the @dklb project?
 
 The table above highlights that a micro frontend architecture can effectively address the challenges and limitations of the current monolithic system in the @dklb project. This approach introduces greater flexibility in development and deployment, while also improving maintainability and scalability for individual parts of the frontend. These characteristics align well with agile methodologies, promoting iterative development and enabling faster delivery.
 

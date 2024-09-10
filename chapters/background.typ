@@ -14,7 +14,7 @@ However, as applications grow in size and complexity, the limitations of a monol
 
 Moreover, scaling a monolithic application poses significant challenges. Because the entire application exists as a single unit, scaling necessitates replicating the entire system, even when only a small part of it is needed to scale (illustrated in @figure_scale_monolith_microservice). This approach results in resource inefficiencies and increased costs. In contrast, transitioning to a microservices architecture provides a more flexible and scalable solution for developing complex applications, enabling the scaling of individual components rather than the entire system.
 
-However, monolithic architecture can still be a practical and viable option, particularly for smaller organizations or those that do not encounter significant scalability challenges @james_Microservices_2014 @newman_BuildingMicroservices2nd_2021.
+Monolithic architecture can still be a practical and viable option, particularly for smaller organizations or those that do not encounter significant scalability challenges @james_Microservices_2014 @newman_BuildingMicroservices2nd_2021.
 
 #figure(
   image("/assets/scale_monolith_microservice.png"),
@@ -29,26 +29,26 @@ From an external viewpoint, microservices operate as black boxes, delivering bus
 
 The concept of microservices has been an important subject of research and development for over a decade. Sam Newman identified five key principles that are crucial for understanding the effectiveness of this architectural approach. These principles include independent deployability, designing services around business domains, each service owning its state, and ensuring that the architecture aligns with the organizational structure.
 
-Independent deployability is a core principle of microservices architecture, allowing developers to modify, deploy, and release changes to a microservice without affecting others. Achieving this requires that microservices be loosely coupled, ensuring that updates to one service do not necessitate changes in others. This is accomplished by establishing explicit, well-defined, and stable contracts between services.
+Independent deployability is a core principle of microservices architecture, allowing developers to modify, deploy, and release changes to a microservice without affecting others. Achieving this requires that microservices be loosely coupled, guaranteeing that updates to one service do not necessitate changes in others. This is accomplished by establishing explicit, well-defined, and stable contracts between services.
 
-Building on the idea of independent deployability, modeling microservices around business domains rather than technical layers can further enhance these benefits. @ddd provides a framework for structuring services to mirror real-world domains, thereby simplifying the introduction of new features and functionalities. When services are aligned with business domains, changes usually involve fewer services, which reduces the complexity and cost of updates. This approach also ensures that the software architecture evolves in parallel with the business itself. The principles of @ddd will be further explored in @section_ddd.
+Building on the idea of independent deployability, modeling microservices around business domains rather than technical layers can further enhance these benefits. @ddd provides a framework for structuring services to mirror real-world domains, thereby simplifying the introduction of new features and functionalities. When services are aligned with business domains, changes usually involve fewer services, which reduces the complexity and cost of updates. The principles of @ddd encourage designing systems that remain flexible and adaptable as business needs change over time.
 
 Another key concept is that each microservice should maintain ownership of its state, interacting with other services only when necessary to obtain data. This separation allows services to manage what data is shared and what remains hidden. By maintaining clear boundaries between internal implementation details and external contracts, this approach minimizes backward-incompatible changes and reduces the potential ripple effects of updates across the system.
 
-Furthermore, aligning the architecture with the organizational structure is essential for the success of microservices. Traditional architectures often mirror the communication patterns within an organization @conway_HOWCOMMITTEESINVENT_1968. In a microservices architecture, structuring teams around business domains promotes an end-to-end ownership of specific functionalities. With this alignment, teams take full responsibility for their services, from development to production, thereby enabling faster and more efficient development processes.
+Furthermore, aligning the architecture with the organizational structure is essential for the success of microservices. While traditional architectures often mirror the communication patterns within an organization @conway_HOWCOMMITTEESINVENT_1968, a microservices architecture benefits from structuring teams around business domains. This promotes end-to-end ownership of specific functionalities. With this alignment, teams take full responsibility for their services, from development to production, leading to faster and more efficient development processes.
 
 == Micro Frontend Architecture
 
-Micro frontend architecture applies the principles of microservices to frontend development. This concept was first introduced in the ThoughtWorks Technology Radar at the end of 2016 @_MicroFrontendsTechnology_, illustrating how the advantages gained from microservices in backend development can similarly be leveraged in the frontend.
+The concept of micro frontends was first introduced in the ThoughtWorks Technology Radar at the end of 2016, demonstrating how the benefits achieved from microservices in backend development can also be applied to the frontend  @_MicroFrontendsTechnology_.
 
 #figure(
   image("/assets/mono_ms_mfe.png"),
   caption: [A monolithic application is transformed into one composed of microservices and micro frontends.]
 ) <figure_mono_ms_mfe>
 
-The five key concepts of microservices, as they relate to micro frontends, will also be explored in this discussion.
+The five key concepts of microservices, as they relate to micro frontends, will also be explored in this discussion. An online shop with different sections, each developed by separate teams, will serve as a practical example to provide greater clarity.
 
-In the context of micro frontends, independent deployability allows each section of the frontend to be developed, tested, and deployed independently of other sections. For example, if the team managing the product detail section needs to introduce a new feature or resolve a bug, they can deploy their changes without affecting the checkout or product recommendation sections.
+Independent deployability allows each section of the frontend to be developed, tested, and deployed independently of other sections. For example, if the team managing the product detail section needs to introduce a new feature or resolve a bug, they can deploy their changes without affecting the checkout or product recommendation sections.
 
 Micro frontends should also mirror the structure of business domains. Building on concepts of @ddd, each micro frontend corresponds to a specific business function, such as a shopping cart, product catalog, or user authentication. This alignment ensures that changes to business logic are contained within a single micro frontend, simplifying updates and making the system more adaptable to evolving business requirements.
 
@@ -56,14 +56,14 @@ Managing its own state within a micro frontend offers several benefits. It helps
 
 The final key concept is that teams in a micro frontend architecture are organized around business domains, with each team taking full responsibility for the development of their respective micro frontend. This organizational structure minimizes the need for inter-team coordination and enhances the speed of decision-making processes without waiting for input or approval from other teams.
 
-It is important to note that microservices and micro frontend architectures may not be suitable for all types of backend and frontend applications due to the additional complexity they introduce at both technical and organizational levels. However, these approaches are particularly beneficial in scenarios where multiple teams must collaborate on the same application or when there is a need to gradually replace an existing legacy system.
+// However, it is important to note that microservices and micro frontend architectures may not be suitable for all types of backend and frontend applications due to the additional complexity they introduce at both technical and organizational levels. However, these approaches are particularly beneficial in scenarios where multiple teams must collaborate on the same application or when there is a need to gradually replace an existing legacy system.
 
 == Domain-Driven Design <section_ddd>
 
 Domain-Driven Design (DDD) focuses on the division of a large system into smaller, more manageable services. Introduced by Eric Evans in 2003, @ddd provides a structured approach to software development that closely aligns with business goals @eric_DomainDrivenDesignTackling_2003. Although @ddd introduces a wide range of concepts, this summary will concentrate on a few key elements: domain, subdomain, bounded context, and context mapping. These concepts are illustrated through the example of an online shopping application, as shown in @figure_ddd. The application is structured around four main domains, each containing its subdomains and two bounded contexts.
 
 #figure(
-  image("/assets/ddd.png"),
+  image("/assets/ddd.png", width: 90%),
   caption: [Domain-Driven Design structure of an online shopping application.]
 ) <figure_ddd>
 

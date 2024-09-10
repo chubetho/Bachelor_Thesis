@@ -59,30 +59,32 @@ The table below outlines the key differences in the development cycle between th
     
     flip[Deployment Stage],
     [ 
-      Deployment with micro frontends is more complex, as it necessitates the creation of key configuration files depending on the number of applications involved. However, the more effort invested during this stage, the less work will be required in the CI/CD process.
+      Deployment with micro frontends is more complex, as it necessitates the creation of key configuration files depending on the number of applications involved. However, the more effort invested during this stage, the less work will be required in the @ci/@cd process.
     ], 
     [ 
        The configuration files can be written once and require minimal modifications thereafter, as there will consistently be two applications running in parallel: the frontend and the server application.
     ],
     
-    flip[CI Stage],
+    flip[@ci Stage],
     [ 
-      The number of configuration files for CI increases with the number of micro frontends.
+      The number of configuration files for @ci increases with the number of micro frontends.
       
       However, only the pipeline responsible for a specific micro frontend will be triggered when changes are made to that micro frontend.
     ], 
     [ 
-      The CI steps are mostly identical in both approaches. But in @spa approach, having a single configuration file for CI results in a shorter pipeline runtime.
+      The @ci steps are mostly identical in both approaches. But in @spa approach, having a single configuration file for @ci results in a shorter pipeline runtime.
       
       However, as any modification in any part of the application will trigger the pipeline for the entire application.
     ],
     
-    flip[CD Stage],
+    flip[@cd Stage],
     table.cell(colspan: 2)[
-     The CD pipeline is identical for both approaches, with each configured to run after code changes are merged into the main branch, triggering redeployment on the virtual private server.
+     The @cd pipeline is identical for both approaches, with each configured to run after code changes are merged into the main branch, triggering redeployment on the virtual private server.
     ],
   )  
 }
+
+Overall, the @spa approach is simpler, with fewer directories, configurations, and a single build process. In contrast, micro frontends add complexity in setup, build, and deployment, requiring more configuration.
 
 == Impact on Flexibility, Maintainability, Scalability, and Performance
 
@@ -110,11 +112,7 @@ Independent scaling can introduce increased infrastructure overhead. Each micro 
 
 === Performance
 
-Since each micro frontend operates as an independent module, only the necessary parts of the application are loaded at any given time. For instance, when a user interacts with the `lotto` module, only the relevant components for that module are fetched, while the code chunks for the `home` module remain untouched. This approach not only improves initial page load times but also ensures that users only download essential parts of the application, reducing latency and enhancing overall responsiveness.
-
-Integrating multiple independent micro frontends, however, introduces additional complexity. Ensuring efficient communication between these modules, especially when shared resources or data are involved, requires careful planning and optimization to avoid performance bottlenecks.
-
-To further evaluate performance, the open-source tool Sitespeed.io is used to analyze website speed based on performance best practices @_SiteSpeedIO_. The table below provides a comparison between the micro frontends and @spa versions, with metrics measured using the Chrome browser over five iterations. The results are color-coded: blue indicates informational data, green denotes a pass, yellow signals a warning, and red represents poor performance.
+To evaluate performance, the open-source tool Sitespeed.io is used to analyze website speed based on performance best practices @_SiteSpeedIO_. The table below compares the micro frontends and @spa versions, with metrics gathered from the homepage of the application using the Chrome browser over five iterations. The results are color-coded: blue for informational data, green for passing, yellow for warnings, and red for poor performance.
 
 #{
   let tred = c => text(weight: "bold", fill: red, c)
@@ -147,10 +145,10 @@ To further evaluate performance, the open-source tool Sitespeed.io is used to an
 }
 #v(1em)
 
-An important metric to consider is the JavaScript Transfer Size, which accounts for approximately 85-90% of the Total Transfer Size. In the micro frontends implementation, this transfer size is nearly double that of the @spa version, leading to longer page load times. The primary reason for this increase is the requirement for the host application to fetch the `remoteEntry.js` files from its remote modules. These entry files play a crucial role in Module Federation, containing essential information about the remote module, such as its name and the components it exposes @_ModuleFederation_. This additional overhead can slow down the initial load, as the host must retrieve and process these files to properly display the micro frontends and manage their interactions.
+An important metric to consider is the JavaScript Transfer Size, which accounts for approximately 85-90% of the Total Transfer Size. In the micro frontends implementation, this transfer size is nearly double that of the @spa version, leading to longer page load times. The primary reason for this increase is the requirement for the host application to fetch the `remoteEntry.js` files from its remote modules. These entry files play a crucial role in Module Federation, containing essential information about the remote module, such as its name and the components it exposes @_ModuleFederation_. This additional overhead will slow down the initial load, as the host must retrieve and process these files to properly display the micro frontends and manage their interactions.
 
 == Limitations
 
-Due to the limited scope of the experiment, the implemented application remains relatively small, making it challenging to fully evaluate the advantages of micro frontend architecture in a large-scale web application. This smaller scale also accounts for why the monolithic @spa, which is generally more efficient for smaller projects, outperformed the micro frontend version in terms of performance. Additionally, the experiment concentrated on a single approach to implementing micro frontends, leaving several important aspects unexplored. For example, the potential benefits of using native Web Components instead of Module Federation were not examined, nor was the impact of integrating Module Federation with server-side composition. These unexplored alternatives could offer valuable insights into how micro frontends may function in different scenarios and when scaling for larger, more complex applications.
+Due to the limited scope of the experiment, the implemented application is relatively small, making it difficult to fully examine the advantages of micro frontend architecture for larger, more complex applications. Additionally, the experiment focused on a single implementation approach, leaving several key aspects unexplored. For instance, the potential benefits of using native Web Components instead of Module Federation, as well as the impact of integrating Module Federation with server-side composition, were not examined. These alternatives could offer valuable insights into how micro frontends might perform in different scenarios.
 
 #pagebreak(weak: true)
