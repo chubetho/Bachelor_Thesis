@@ -39,11 +39,11 @@ Furthermore, aligning the architecture with the organizational structure is esse
 
 == Micro Frontend Architecture
 
-The concept of micro frontends was first introduced in the ThoughtWorks Technology Radar at the end of 2016, demonstrating how the benefits achieved from microservices in backend development can also be applied to the frontend  @_MicroFrontendsTechnology_.
+The concept of micro frontends was first introduced in the ThoughtWorks Technology Radar at the end of 2016, demonstrating how the benefits achieved from microservices in backend development can also be applied to the frontend @_MicroFrontendsTechnology_.
 
 #figure(
   image("/assets/mono_ms_mfe.png"),
-  caption: [A monolithic application is transformed into one composed of microservices and micro frontends.]
+  caption: [A monolithic application is transformed into one composed of microservices and micro frontends.],
 ) <figure_mono_ms_mfe>
 
 The five key concepts of microservices, as they relate to micro frontends, will also be explored in this discussion. An online shop with different sections, each developed by separate teams, will serve as a practical example to provide greater clarity.
@@ -64,7 +64,7 @@ Domain-Driven Design (DDD) focuses on the division of a large system into smalle
 
 #figure(
   image("/assets/ddd.png", width: 90%),
-  caption: [Domain-Driven Design structure of an online shopping application.]
+  caption: [Domain-Driven Design structure of an online shopping application.],
 ) <figure_ddd>
 
 The domain represents the specific area of knowledge or activity that a software application is designed to address, including all relevant business logic and rules. In the given example, the domains are order, product, user, and payment.

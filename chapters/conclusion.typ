@@ -14,74 +14,78 @@ The table below outlines the key differences in the development cycle between th
   show table.cell.where(x: 0): strong
   show table.cell.where(y: 0): strong
   let flip = c => table.cell(align: horizon, rotate(-90deg, reflow: true)[#c])
-  
+
   table(
     columns: (auto, 1fr, 1fr),
     inset: 10pt,
     align: (top, left),
-    table.header([], align(center, [Micro frontends]), align(center, [Monolithic SPA])),
-    
+    table.header(
+      [],
+      align(center, [Micro frontends]),
+      align(center, [Monolithic SPA]),
+    ),
+
     flip[Setup Stage],
     [
       Although the project structure of micro frontends is organized to ensure a clear overview, it remains complex due to the presence of numerous directories.
-      
+
       All remotes, the host application, and the UI library must be properly configured to ensure seamless integration.
 
       Managing dependencies between micro frontends introduces additional complexities.
     ],
-    [ 
-      The directories `apps`, `packages`, and `tools` mentioned in @figure_project_structure are redundant. Instead, a single `app` directory is used to store the entire frontend.
-      
-      Both dependency management and configurations are simplified, as the application utilizes a single `package.json` file for all dependencies and a single `vite.config.ts` file for all configurations.
-    ], 
-    
-    flip[Implementation Stage],  
-    table.cell(colspan: 2)[
-       As discussed in @section_implementation, Module Federation with client-side composition offers a development experience similar to that of the @spa approach, leading to comparable implementations for both the host and remote applications in each method.  
-       
-       However, the routing challenges and the integration of the UI library encountered in the micro frontend version are significantly easier to manage in the @spa version.
-    ],
-  
-    flip[Build Stage],   
     [
-      The UI library must be built first before the host and remote applications can be successfully bundled. 
-      
+      The directories `apps`, `packages`, and `tools` mentioned in @figure_project_structure are redundant. Instead, a single `app` directory is used to store the entire frontend.
+
+      Both dependency management and configurations are simplified, as the application utilizes a single `package.json` file for all dependencies and a single `vite.config.ts` file for all configurations.
+    ],
+
+    flip[Implementation Stage],
+    table.cell(colspan: 2)[
+      As discussed in @section_implementation, Module Federation with client-side composition offers a development experience similar to that of the @spa approach, leading to comparable implementations for both the host and remote applications in each method.
+
+      However, the routing challenges and the integration of the UI library encountered in the micro frontend version are significantly easier to manage in the @spa version.
+    ],
+
+    flip[Build Stage],
+    [
+      The UI library must be built first before the host and remote applications can be successfully bundled.
+
       The process of building the server application remains identical in both approaches.
     ],
     [
       No special considerations are necessary, as the entire frontend can be built in a single process.
     ],
-    
+
     flip[Testing Stage],
     table.cell(colspan: 2)[
       Unit testing and end-to-end testing are the same for both approaches. Unit testing occurs at the component level, while end-to-end testing primarily simulates user interactions in a real browser environment. Both types of testing focus on verifying functionality and user workflows, rather than on how components are composed into the view.
     ],
-    
+
     flip[Deployment Stage],
-    [ 
+    [
       Deployment with micro frontends is more complex, as it necessitates the creation of key configuration files depending on the number of applications involved. However, the more effort invested during this stage, the less work will be required in the @ci/@cd process.
-    ], 
-    [ 
-       The configuration files can be written once and require minimal modifications thereafter, as there will consistently be two applications running in parallel: the frontend and the server application.
     ],
-    
+    [
+      The configuration files can be written once and require minimal modifications thereafter, as there will consistently be two applications running in parallel: the frontend and the server application.
+    ],
+
     flip[@ci Stage],
-    [ 
+    [
       The number of configuration files for @ci increases with the number of micro frontends.
-      
+
       However, only the pipeline responsible for a specific micro frontend will be triggered when changes are made to that micro frontend.
-    ], 
-    [ 
+    ],
+    [
       The @ci steps are mostly identical in both approaches. But in @spa approach, having a single configuration file for @ci results in a shorter pipeline runtime.
-      
+
       However, as any modification in any part of the application will trigger the pipeline for the entire application.
     ],
-    
+
     flip[@cd Stage],
     table.cell(colspan: 2)[
-     The @cd pipeline is identical for both approaches, with each configured to run after code changes are merged into the main branch, triggering redeployment on the virtual private server.
+      The @cd pipeline is identical for both approaches, with each configured to run after code changes are merged into the main branch, triggering redeployment on the virtual private server.
     ],
-  )  
+  )
 }
 
 Overall, the @spa approach is simpler, with fewer directories, configurations, and a single build process. In contrast, micro frontends add complexity in setup, build, and deployment, requiring more configuration.
@@ -118,10 +122,10 @@ To evaluate performance, the open-source tool Sitespeed.io is used to analyze we
   let tred = c => text(weight: "bold", fill: red, c)
   let tgreen = c => text(weight: "bold", fill: green, c)
   let tblue = c => text(weight: "bold", fill: blue, c)
-  let tyellow = c => text(weight: "bold", fill: rgb(225,164,0), c)
+  let tyellow = c => text(weight: "bold", fill: rgb(225, 164, 0), c)
   show table.cell.where(y: 0): strong
   show table.cell.where(x: 0): strong
-  
+
   figure(
     caption: [Comparison between the micro frontends and monolithic SPA versions.],
     table(
@@ -129,17 +133,17 @@ To evaluate performance, the open-source tool Sitespeed.io is used to analyze we
       inset: 10pt,
       align: left,
       table.header([], [Micro frontends], [Monolithic SPA]),
-      [First Contentful Paint],     tgreen[60 ms],    tgreen[44 ms],
-      [Fully Loaded],               tblue[80 ms],     tblue[58 ms],
-      [Page Load Time],             tblue[7 ms],      tblue[16 ms],
-      [Largest Contentful Paint],   tgreen[185 ms],   tgreen[168 ms],
-      [Total Requests],             tgreen[26],       tgreen[15],
-      [JavaScript Requests],        tblue[15],        tblue[6],
-      [CSS Requests],               tblue[3],         tblue[1],
-      [HTML Transfer Size],         tblue[563 B],     tblue[458 B],
-      [JavaScript Transfer Size],   tred[299.6 KB],   tyellow[143.3 KB],
-      [CSS Transfer Size],          tblue[24.2 KB],   tblue[16.8 KB],
-      [Total Transfer Size],        tgreen[333.3 KB], tgreen[167.8 KB],  
+      [First Contentful Paint], tgreen[60 ms], tgreen[44 ms],
+      [Fully Loaded], tblue[80 ms], tblue[58 ms],
+      [Page Load Time], tblue[7 ms], tblue[16 ms],
+      [Largest Contentful Paint], tgreen[185 ms], tgreen[168 ms],
+      [Total Requests], tgreen[26], tgreen[15],
+      [JavaScript Requests], tblue[15], tblue[6],
+      [CSS Requests], tblue[3], tblue[1],
+      [HTML Transfer Size], tblue[563 B], tblue[458 B],
+      [JavaScript Transfer Size], tred[299.6 KB], tyellow[143.3 KB],
+      [CSS Transfer Size], tblue[24.2 KB], tblue[16.8 KB],
+      [Total Transfer Size], tgreen[333.3 KB], tgreen[167.8 KB],
     ),
   )
 }

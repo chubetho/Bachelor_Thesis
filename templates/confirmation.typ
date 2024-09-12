@@ -1,8 +1,8 @@
 #heading(
-    level: 1,
-    numbering: none,
-    "Zustimmung zur Plagiatsüberprüfung" 
-  )
+  level: 1,
+  numbering: none,
+  "Zustimmung zur Plagiatsüberprüfung",
+)
 
 #[
   #set text(lang: "de")
@@ -14,7 +14,7 @@
     #line(length: 50%)
     Würzburg, am 13. September 2024 #h(2em)
   ]
-  
+
 ]
 
 #pagebreak(weak: true)

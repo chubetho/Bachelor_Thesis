@@ -1,6 +1,6 @@
 #set page(
   paper: "a4",
-  margin: (right: 3cm, left: 3.5cm, top: 2cm, bottom: 3.5cm)
+  margin: (right: 3cm, left: 3.5cm, top: 2cm, bottom: 3.5cm),
 )
 
 #set align(center)
@@ -9,10 +9,10 @@
   #set text(lang: "de")
   Technische Hochschule Würzburg-Schweinfurt\ Fakultät Informatik und Wirtschaftsinformatik
 ]
-  
+
 #v(7em)
 
-#text(1.5em, "Bachelorarbeit")  
+#text(1.5em, "Bachelorarbeit")
 
 #v(2em)
 

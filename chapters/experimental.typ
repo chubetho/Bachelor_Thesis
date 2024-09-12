@@ -95,8 +95,7 @@ Aligning with the monorepo strategy, the project structure is designed to ensure
       └── ...
       ```
     ]<figure_project_structure>
-  ]
- ,
+  ],
   [
     - apps: This directory contains the host, known as shell application (`shell`), which integrates and manages remotes, referred to as micro frontends, such as `home` and `lotto`. Each remote, along with the host, is developed and maintained within its own subdirectory.
 
@@ -107,7 +106,7 @@ Aligning with the monorepo strategy, the project structure is designed to ensure
     - e2e: Here are end-to-end tests for the application, which are an important part of the continuous integration pipeline.
 
     - tools: This directory holds based configurations for development dependencies such as Tailwind CSS.
-  ]
+  ],
 )
 
 === App Configurations
@@ -116,16 +115,14 @@ Aligning with the monorepo strategy, the project structure is designed to ensure
 
 In the vite configuration shown in @figure_vite_config_shell, `@originjs/vite-plugin-federation` plugin is used to establish the host application running on port `8000`. This host is configured to have two remote applications, `home_app` and `lotto_app`, which operate on ports `8001` and `8002`, respectively. The configuration also includes the `shared: ['vue']` option, ensuring that the Vue package is shared between the host and the remote applications.
 
-#figure(
-  caption: "Vite configuration for the host application."
-)[
+#figure(caption: "Vite configuration for the host application.")[
   ```ts
   // apps/host/vite.config.ts
   import federation from '@originjs/vite-plugin-federation'
   export default defineConfig({
     plugins: [
       federation({
-        remotes: { 
+        remotes: {
           'home_app': 'http://localhost:8001/assets/remoteEntry.js',
           'lotto_app': 'http://localhost:8002/assets/remoteEntry.js'
         },
@@ -142,9 +139,7 @@ In the vite configuration shown in @figure_vite_config_shell, `@originjs/vite-pl
 
 As outlined in the configuration for the host application (@figure_vite_config_shell) the `home_app` is configured to run on port `8001`, while the `lotto_app` is set to run on port `8002`. Both remote applications also use the `@originjs/vite-plugin-federation` plugin to expose their respective `App` components from their source directories (@figure_vite_config_home_and_lotto). These `App` components can later be imported and displayed, for example, using `import HomeApp from 'home_app/App'`.
 
-#figure(
-  caption: "Vite configuration for the home and lotto applications."
-)[
+#figure(caption: "Vite configuration for the home and lotto applications.")[
   ```ts
   // apps/home/vite.config.ts
   import federation from '@originjs/vite-plugin-federation'
@@ -160,19 +155,19 @@ As outlined in the configuration for the host application (@figure_vite_config_s
   })
   ```
   ```ts
-// apps/lotto/vite.config.ts
-import federation from '@originjs/vite-plugin-federation'
-export default defineConfig({
-  plugins: [
-    federation({
-      name: 'lotto_app',
-      exposes: { './App': './src/App.vue' },
-      shared: ['vue'],
-    }),
-  ],
-  server: { port: 8002 }
-})
-```
+  // apps/lotto/vite.config.ts
+  import federation from '@originjs/vite-plugin-federation'
+  export default defineConfig({
+    plugins: [
+      federation({
+        name: 'lotto_app',
+        exposes: { './App': './src/App.vue' },
+        shared: ['vue'],
+      }),
+    ],
+    server: { port: 8002 }
+  })
+  ```
 ] <figure_vite_config_home_and_lotto>
 
 #pagebreak()
@@ -181,9 +176,7 @@ export default defineConfig({
 
 To prevent a single point of failure that could potentially bring down the entire application if the UI library fails, the UI will be bundled within each micro frontend during the compile time, rather than being deployed as a separate micro frontend. This approach ensures that all essential base elements are packaged together, thereby simplifying the management of multiple deployments and minimizing the risk of version inconsistencies. As illustrated in @figure_vite_config_ui, the UI library will be built using the ES module format. Additionally, the Vue package is excluded from the build, as it is already present in both the host and remote applications.
 
-#figure(
-  caption: "Vite configuration for UI library",
-)[
+#figure(caption: "Vite configuration for UI library")[
   ```ts
   // apps/host/vite.config.ts
   export default defineConfig({
@@ -207,9 +200,7 @@ To prevent a single point of failure that could potentially bring down the entir
 
 To ensure consistent styling across all applications, a base Tailwind CSS configuration has been established, as illustrated at the top of @figure_tailwind. This setup allows Tailwind CSS to scan all Typescript and Vue files to generate the required styles. The `preflight` option, responsible for generating reset CSS rules, is enabled exclusively in the shell application, which helps minimize the amount of CSS that users need to download. Furthermore, a specific set of colors has been defined to maintain a uniform color scheme across the applications. At the bottom of @figure_tailwind is the `tailwind.config.ts` file for the shell application, which extends this base configuration.
 
-#figure(
-  caption: [The default Tailwind CSS configuration, along with its extended version.]
-)[
+#figure(caption: [The default Tailwind CSS configuration, along with its extended version.])[
   ```ts
   // tools/tailwind/index.ts
   export default {
@@ -217,11 +208,11 @@ To ensure consistent styling across all applications, a base Tailwind CSS config
     corePlugins: {
       preflight: false,
     },
-    theme: { 
-        colors: { 
+    theme: {
+        colors: {
           primary: '#d22321',
           secondary: '#c5c5c5'
-        }  
+        }
     }
   }
   ```
@@ -248,9 +239,7 @@ A quick note: Vue Router #footnote[https://router.vuejs.org/], the official rout
 
 The host application should be simple and lightweight, including elements that remain consistent across all pages, such as the navigation menu and footer. For the main content area, the `RouterView` component from Vue Router is utilized as a slot, responsible for loading the appropriate registered component based on the current URL state.
 
-#figure(
-  caption: "App component of the host application."
-)[
+#figure(caption: "App component of the host application.")[
   ```vue
   <!-- apps/shell/App.vue -->
   <template>
@@ -267,9 +256,7 @@ After defining the entry component `App.vue`, all necessary routes will be regis
 
 Vue Router supports lazy loading of components using the promise syntax. For example, the syntax `component: () => import('home_app/App')` means that the `App` component of the `home` application is only loaded when the user navigates to the homepage. This optimization reduces the amount of JavaScript that needs to be downloaded initially, improving page load times.
 
-#figure(
-  caption: [Router configuration of the host application.]
-)[
+#figure(caption: [Router configuration of the host application.])[
   ```ts
   // apps/shell/router.ts
   const router = createRouter({
@@ -295,9 +282,7 @@ Vue Router supports lazy loading of components using the promise syntax. For exa
 
 The implementation of each micro frontend is straightforward and aligns with the development of a normal single-page application. For instance, the `App.vue` component in the `home` micro frontend might contain a simple heading displaying "Homepage". When a user navigates to the homepage, Vue Router loads this template into the `App` component of the `shell` application, producing the result shown below.
 
-#figure(
-  caption: [The `App` component of the `shell` application after the `home` is loaded.]
-)[
+#figure(caption: [The `App` component of the `shell` application after the `home` is loaded.])[
   ```html
   <!-- apps/home/App.vue -->
   <template>
@@ -322,9 +307,7 @@ The UI library must be designed to be minimal, highly extensible, and independen
 
 As shown in @figure_button_ui_with_customized, a basic `UiButton` component is implemented as a simple HTML button element with predefined Tailwind CSS classes and no context-specific logic. If the home micro frontend requires a customized button, it can create a wrapper around this component to extend its styles, as demonstrated by the `HomeButton` component.
 
-#figure(
-  caption: [The `UiButton` component and its wrapper `HomeButton`.]
-)[
+#figure(caption: [The `UiButton` component and its wrapper `HomeButton`.])[
   ```vue
   <!-- packages/ui/UiButton/UiButton.vue -->
   <template>
@@ -336,7 +319,7 @@ As shown in @figure_button_ui_with_customized, a basic `UiButton` component is i
   ```vue
   <!-- apps/home/components/HomeButton.vue -->
   <template>
-    <UiButton class="bg-primary text-white"> 
+    <UiButton class="bg-primary text-white">
       <slot />
     </UiButton>
 
@@ -352,9 +335,7 @@ As shown in @figure_button_ui_with_customized, a basic `UiButton` component is i
 
 The server application is configured to listen on port `3000` and only accepts requests originating from port `8000`, where the host application is running. It verifies the request's origin, setting `authorized` to true or false based on whether the origin is `localhost:8000`, and configures CORS to permit only this specific origin. This setup creates a security layer that helps prevent unauthorized requests from third parties, including REST clients like Postman or web browsers, ensuring that only the host application can securely interact with the server application.
 
-#figure(
-  caption: [The configuration for the server application.]
-)[
+#figure(caption: [The configuration for the server application.])[
   ```ts
    const app = new Elysia()
     .derive(({ request }) => {
@@ -374,9 +355,7 @@ The server application is configured to listen on port `3000` and only accepts r
 
 The path `/lotto6aus49` alone is insufficient to fully represent the entire subdomain for the Lotto game, as there is still a need for a page to view the results of previous draws. A proposed solution is to use `/lotto6aus49` as a prefix and then remove the existing route, replacing it with two new routes: one for displaying the play field at `/lotto6aus49/normalschein` and another for querying previous results at `/lotto6aus49/quoten`.
 
-#figure(
-  caption: "Router of the host application with recently added routes."
-)[
+#figure(caption: "Router of the host application with recently added routes.")[
   ```ts
   // apps/shell/router.ts
   const router = createRouter({
@@ -398,24 +377,22 @@ The path `/lotto6aus49` alone is insufficient to fully represent the entire subd
 
 Additionally, the `lotto` micro frontend must expose its corresponding components for these new routes, ensuring that the correct components are available to be loaded and displayed by the host application.
 
-#figure(
-  caption: [Vite configuration for lotto micro frontend with more exposed components.],
-)[
-```ts
-// apps/lotto/vite.config.ts
-export default defineConfig({
-  plugins: [
-    federation({
-      name: 'lotto_app',
-      exposes: { 
-        './Normalschein': './src/Normalschein.vue',
-        './Quoten': './src/Quoten.vue',
-      },
-      shared: ['vue']
-    }),
-  ]
-})
-```
+#figure(caption: [Vite configuration for lotto micro frontend with more exposed components.])[
+  ```ts
+  // apps/lotto/vite.config.ts
+  export default defineConfig({
+    plugins: [
+      federation({
+        name: 'lotto_app',
+        exposes: {
+          './Normalschein': './src/Normalschein.vue',
+          './Quoten': './src/Quoten.vue',
+        },
+        shared: ['vue']
+      }),
+    ]
+  })
+  ```
 ]
 
 These routes share the prefix `/lotto6aus49`, which suggests that a separate Vue Router instance should ideally be created within the `lotto` micro frontend to manage its nested routes. This approach would allow the host application's router to register only the top-level routes for its remotes, while deeper-level routing would be handled within each micro frontend. However, this approach is not feasible under the current Module Federation setup. In this architecture, only a single instance of Vue is created within the host application, which utilizes the router defined in @figure_shell_router. Consequently, no additional Vue or Vue Router instance exists within the `lotto` micro frontend to manage nested routing independently.
@@ -429,9 +406,7 @@ However, if a new route is now required to display instructions for the Lotto ga
 
 The initial step in this routing solution is to create an overview configuration for all applications. This overview specifies the directory locations, operating ports, names, and prefixes for each application. This configuration is important not only for defining how each micro frontend is served but also for enabling the host application to access information about its remotes. Henceforth, the term "overview configuration" will refer to this specific configuration.
 
-#figure(
-  caption: "Overview configuration for all applications."
-)[
+#figure(caption: "Overview configuration for all applications.")[
   ```js
   // packages/mfe-config/index.js
   export default {
@@ -463,57 +438,55 @@ Firstly, a list of routes needs to be generated. Drawing inspiration from the fi
   caption: [A wrapper function is built on top of the vite plugin.],
   [
     ```js
-   function wrapper(name, _exposes, _remotes){
-     const files = getFiles(name)
-     const exposes = getExposes(files, _exposes)
-     saveExpsoses()
-     const remotes = getRemotes(_remotes)
-     return federation({
-       name,
-       exposes,
-       remotes
-     })
-   }
+    function wrapper(name, _exposes, _remotes){
+      const files = getFiles(name)
+      const exposes = getExposes(files, _exposes)
+      saveExpsoses()
+      const remotes = getRemotes(_remotes)
+      return federation({
+        name,
+        exposes,
+        remotes
+      })
+    }
     ```
-  ]
+  ],
 ) <figure_wrapper_function>
 
 In the context of the `lotto` micro frontend, its folder structure is illustrated in @figure_folder_structure_lotto, left. After the execution of the wrapper function, a `routes.json` file is temporarily saved on disk and also included in the `exposes` object, which the host application will later access. The content of this file is illustrated in @figure_folder_structure_lotto, right.
 
-#figure(
-  caption: [The folder structure of the `lotto` micro frontend (left) and the generated `routes.json `file (right).]
-)[
+#figure(caption: [The folder structure of the `lotto` micro frontend (left) and the generated `routes.json `file (right).])[
   #grid(
-    columns: (1fr,1fr),
+    columns: (1fr, 1fr),
     gutter: 10pt,
     [
       ```
       .
       └── apps
           ├── lotto
-          │   │ 
+          │   │
           │   ├── pages
           │   │   ├── normalschein.vue
           │   │   └── quoten.vue
           │   └── ...
-          │ 
+          │
           └── ...
       ```
     ],
     [
       ```json
       [
-        { 
-          "path": "/normalschein", 
-          "component": "Normalschein" 
+        {
+          "path": "/normalschein",
+          "component": "Normalschein"
         },
-        { 
-          "path": "/quoten", 
-          "component": "Quoten" 
+        {
+          "path": "/quoten",
+          "component": "Quoten"
         }
       ]
       ```
-    ]
+    ],
   )
 
 
@@ -543,7 +516,7 @@ As illustrated in the dependencies graph below, the UI library must be built bef
 
 #figure(
   image("/assets/build.png", width: 80%),
-  caption: "Dependencies graph: Solid arrows indicate build-time dependencies; Dashed arrows indicate runtime dependencies."
+  caption: "Dependencies graph: Solid arrows indicate build-time dependencies; Dashed arrows indicate runtime dependencies.",
 )
 
 
@@ -566,7 +539,7 @@ Unit testing focuses on the smallest testable parts of the application, such as 
     expect(button.exists()).toBe(true)
     expect(button.text()).toBe('Click me')
   })
-  
+
   it('should be rendered as a link', () => {
     const component = mount(UiButton, { slots, props: { to: '/about' } })
     const anchor = component.find('a')
@@ -590,7 +563,7 @@ End-to-end (E2E) testing is a comprehensive method for evaluating the entire wor
     const playBtn = page.getByRole('link', { name: /Jetzt Spielen/ }))
     await expect(playBtn).toBeVisible()
     await playBtn.click()
-  
+
     const url = page.url()
     expect(url).toBe('http://localhost:8000/lotto6aus49/normalschein')
 
@@ -615,7 +588,7 @@ The Dockerfile of the server application defines a two-stage build process. In t
   WORKDIR /dklb
   COPY ./server ./
   RUN bun install && bun run build
-  
+
   FROM oven/bun:slim
   COPY --from=build /dklb/dist/index.js ./index.js
   EXPOSE 3000
@@ -632,29 +605,29 @@ To avoid the problems related to manual management, particularly regarding routi
 Firstly, @cors headers must be appended to each nginx configuration of remote applications. This step is essential to guarantee that only requests originating from the host application are permitted and also prevent any CORS-related issues. Secondly, the host's nginx configuration is configured to always attempt to load the `/index.html` file, regardless of the URI requested. Without this configuration, the nginx server may return a "Not found" error for requests that do not explicitly point to existing resources.
 
 #figure(caption: [Generation of `nginx.conf` files based on the overview configuration.])[
-```ts
-// scripts/docker.ts
-const cors = `
-add_header 'Access-Control-Allow-Origin' 'http://localhost:8000';
-add_header 'Access-Control-Allow-Methods' 'GET';
-add_header 'Access-Control-Allow-Headers' 'Content-Type';`
+  ```ts
+  // scripts/docker.ts
+  const cors = `
+  add_header 'Access-Control-Allow-Origin' 'http://localhost:8000';
+  add_header 'Access-Control-Allow-Methods' 'GET';
+  add_header 'Access-Control-Allow-Headers' 'Content-Type';`
 
-for (const { port, dir } of Object.values(mfeConfig)) {
-  const isShell = dir === 'shell'
-  const path = `.nginx/${dir}.conf`
-  const str = `
-  server {
-    listen ${port};
-    server_name localhost_${dir};
-    ${isShell ? '' : cors}
-    location / {
-      root      /usr/share/nginx/html/${dir};
-      index     index.html;
-      ${isShell ? 'try_files $uri $uri/ /index.html;' : ''}
-  }`
-  await write(path, str)
-}
-```
+  for (const { port, dir } of Object.values(mfeConfig)) {
+    const isShell = dir === 'shell'
+    const path = `.nginx/${dir}.conf`
+    const str = `
+    server {
+      listen ${port};
+      server_name localhost_${dir};
+      ${isShell ? '' : cors}
+      location / {
+        root      /usr/share/nginx/html/${dir};
+        index     index.html;
+        ${isShell ? 'try_files $uri $uri/ /index.html;' : ''}
+    }`
+    await write(path, str)
+  }
+  ```
 ]
 
 2. Dockerfiles
@@ -671,7 +644,7 @@ The process of generating Dockerfiles for each micro frontend can be seamlessly 
   RUN bun install
   RUN bun run build:ui
   RUN bun run --cwd apps/${dir} build
-  
+
   FROM nginx:alpine
   WORKDIR /usr/share/nginx/html
   RUN rm -rf * && rm -f /etc/nginx/conf.d/default.conf
@@ -692,7 +665,7 @@ The server application's service is first defined, specifying the location of it
 
 This Docker-based strategy enables the @dklb application to be easily deployed on any machine with Docker installed, streamlining the deployment process and ensuring consistency across different environments.
 
-#figure(caption:[Generation of `docker-compose.yml` file based on the overview configuration.])[
+#figure(caption: [Generation of `docker-compose.yml` file based on the overview configuration.])[
   ```ts
   const contents = [
   `services:
@@ -731,12 +704,12 @@ Several deployment strategies are available that can optimize the deployment pro
 
 In this experiment, both single and multi-container approaches are suitable. However, if the @dklb project later decides to adopt a micro frontend architecture and must select one, it will be essential to carefully weigh the importance of memory efficiency against the flexibility and ease of maintenance.
 
-#show image: it => block(radius: 5pt, clip: true)[#it]  
+#show image: it => block(radius: 5pt, clip: true)[#it]
 #figure(
   caption: "Memory usage comparison: multi-container vs. single-container approach.",
-  image("/assets/docker_idle.png")
+  image("/assets/docker_idle.png"),
 )<figure_docker_desktop>
-#show image: it => it  
+#show image: it => it
 
 
 == CI/CD Stage
@@ -799,18 +772,18 @@ After completing the code integration, the focus shifts to automated deployment.
 ]
 
 #pagebreak()
-== Developer Workflow Optimization 
+== Developer Workflow Optimization
 
 To enhance the developer workflow, a scaffold script is implemented to streamline the creation of new micro frontend applications. Initially, a `.template` directory is established to store the templates for the micro frontend application and the pipeline configuration file. Following this, a lightweight command line interface (CLI) is implemented to prompt the developer for the location and prefix of the micro frontend. The corresponding Dockerfile is then generated, and necessary updates are made to the `docker-compose.yml` file. Finally, the script asks whether to install dependencies or perform the build process.
 
-#show image: it => block(radius: 5pt, clip: true)[#it]  
+#show image: it => block(radius: 5pt, clip: true)[#it]
 #grid(
   columns: (1fr, 1.5fr),
   column-gutter: 10pt,
   figure(
     caption: [`.template` directory's structure.],
     [
-       ```
+      ```
       .templates
       ├── app
       │   ├── src
@@ -820,11 +793,11 @@ To enhance the developer workflow, a scaffold script is implemented to streamlin
           ├── ci.yml
           └── ...
       ```
-    ]
+    ],
   ),
   figure(
     caption: [The scaffold CLI for the creation of new micro frontend applications.],
-    image("/assets/create_app.png")
+    image("/assets/create_app.png"),
   ),
 )
 #show image: it => it

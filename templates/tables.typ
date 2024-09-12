@@ -2,7 +2,7 @@
 
 #outline(
   title: none,
-  target: figure.where(kind: table)
+  target: figure.where(kind: table),
 )
 
 #pagebreak(weak: true)

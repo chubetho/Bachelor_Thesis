@@ -1,4 +1,4 @@
-#import "@preview/glossarium:0.4.1": glspl 
+#import "@preview/glossarium:0.4.1": glspl
 
 = Micro Frontend Implementation Approaches
 
@@ -12,9 +12,7 @@ For example, approaches involving server-side and edge-side composition will be 
 
 However, @ssi's utility is generally limited to simpler tasks, as it lacks the flexibility and power required for more complex website architectures. While @ssi is effective at including static components across multiple pages, it is not designed to support dynamic interactions between components within a single page. Since page composition occurs on the server side, any communication between different micro frontends within the view must be routed through the server, typically using REST APIs or similar server-side communication methods. Consequently, @ssi is better suited for basic page assembly tasks rather than for scenarios that demand complex, interactive user interfaces or real-time communication between components.
 
-#figure(
-  caption: [An example of using Server Side Includes.]
-)[
+#figure(caption: [An example of using Server Side Includes.])[
   ```html
   <!-- http://header.mfe/index.html -->
   <html>
@@ -40,9 +38,7 @@ The primary purpose of @esi, a markup language, is to enable edge-side compositi
 
 However, implementations can vary significantly, with some #glspl("cdn") not supporting @esi at all. In environments where @esi is not natively supported, tools like nginx or Varnish can be employed to mimic @esi's functionality by providing similar edge-side processing capabilities. These tools can intercept requests and dynamically assemble content at the edge. Furthermore, @esi shares some of the same disadvantages as @ssi, such as being more suitable for simple static websites and offering limited communication capabilities between components.
 
-#figure(
-  caption: [An example of using Edge Side Includes.]
-)[
+#figure(caption: [An example of using Edge Side Includes.])[
   ```html
   <!-- http://cdn.mfe/header.html -->
   <html>
@@ -68,9 +64,7 @@ Despite the strong isolation benefits provided by iframes, their performance is 
 
 This method is a type of client-side composition. As explained in @section_decision_framework, this composition strategy starts with the browser downloading a shell application, which manages the loading and unloading of various micro frontends. As illustrated in the figure below, the shell application determines the appropriate @html file path based on the current URL and assigns it as the source of the iframe element.
 
-#figure(
-  caption: [An example of using iframe.]
-)[
+#figure(caption: [An example of using iframe.])[
   ```html
   <!-- http://home.mfe/index.html -->
   <html>
@@ -84,7 +78,7 @@ This method is a type of client-side composition. As explained in @section_decis
   <html>
     <body>
       <iframe src="" />
-  
+
       <script>
         const routes = {
           '/':         'http://home.mfe/index.html',
@@ -113,9 +107,7 @@ While web components provide substantial benefits, they also present certain cha
 
 Web components are primarily intended for client-side composition, where they are rendered and executed within the browser. However, they can also be integrated with server-side composition by having the server load other parts of the @html, while the web components are executed after the page has been loaded, allowing for a hybrid composition strategy.
 
-#figure(
-  caption: [An example of using Web Components.]
-)[
+#figure(caption: [An example of using Web Components.])[
   ```js
   // http://home.mfe/index.js
   class HomeApp extends HTMLElement  {
@@ -138,7 +130,7 @@ Web components are primarily intended for client-side composition, where they ar
       <div id="root">
         <home-app /> <!-- <h1>Home</h1> -->
       </div>
-  
+
       <script>
         const routes = {
           '/':         'home-app',
@@ -146,7 +138,7 @@ Web components are primarily intended for client-side composition, where they ar
         }
         const root = document.getElementById('root')
         const elementName = routes[window.location.pathname]
-        const element = document.createElement(elementName) 
+        const element = document.createElement(elementName)
         root.appendChild(element)
       </script>
     </body>
@@ -158,7 +150,7 @@ Web components are primarily intended for client-side composition, where they ar
 
 == Module Federation
 
-Module Federation, introduced in Webpack 5, is a feature of this popular JavaScript bundler that enables different parts of an application to be treated as separate modules. These modules can be shared and used by other parts of the application at runtime @_Webpack_ @_ModuleFederation_. There are two types of modules: 
+Module Federation, introduced in Webpack 5, is a feature of this popular JavaScript bundler that enables different parts of an application to be treated as separate modules. These modules can be shared and used by other parts of the application at runtime @_Webpack_ @_ModuleFederation_. There are two types of modules:
 
 - Exposed Module: Also referred to as a remote application, this is a module that is made available for other applications to consume. It can change its behavior at runtime and is typically defined to provide resources such as a component library or utility functions to other parts of the application.
 
@@ -173,7 +165,7 @@ However, Module Federation introduces certain complexities, particularly in mana
 #figure(caption: [An example of using Module Federation.])[
   ```vue
   <!-- home/App.vue -->
-  <template> 
+  <template>
     <h1>Home</h1>
   </template>
   ```
@@ -194,7 +186,7 @@ However, Module Federation introduces certain complexities, particularly in mana
   <script setup>
   import App from 'remote/App'
   </script>
-  
+
   <template>
     <App /> <!-- <h1>Home</h1> -->
   </template>

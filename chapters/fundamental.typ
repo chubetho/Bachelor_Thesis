@@ -1,18 +1,23 @@
-#import "@preview/glossarium:0.4.1": glspl 
+#import "@preview/glossarium:0.4.1": glspl
 
 = Decision Framework <section_decision_framework>
 
-This chapter will use the micro frontends decision framework introduced by Luca Mezzalira in his book "Building Micro Frontends" @mezzalira_BuildingMicroFrontends2nd_. This comprehensive framework focuses on four key areas: definition, composition, routing, and communication. These areas are important and must be thoroughly considered sequentially and decided upon before starting to build a micro frontends system.
+This chapter will use the micro frontends decision framework introduced by Luca Mezzalira in his book "Building Micro Frontends". This comprehensive framework focuses on four key areas: definition, composition, routing, and communication @mezzalira_BuildingMicroFrontends2nd_. These areas are important and must be thoroughly considered sequentially and decided upon before starting to build a micro frontends system.
 
 To provide a more rounded perspective and deepen the understanding of this framework, this chapter also uses insights from two other important works in the field. "The Art of Micro Frontends" by Florian Rappl @rappl_ArtMicroFrontends_2021 offers valuable additional viewpoints on best practices and advanced techniques. Similarly, Michael Geers's "Micro Frontends in Action" @geers_MicroFrontendsAction_2020 provides practical examples and case studies that illustrate the application of the micro frontends framework in real-world scenarios.
 
 == Split Strategies <section_split>
 
-There are two primary approaches to split a frontend application: horizontally or vertically. In both approaches, a micro frontend is defined to represent a complete subdomain, which can be categorized as core, supporting, or generic, as introduced in @section_ddd. A horizontal split implies a one-to-many relationship between views and micro frontends, where a single view is made up of multiple micro frontends, each responsible for a specific feature within that view. In contrast, a vertical split establishes a many-to-one relationship, where each micro frontend is responsible for one or more complete vertical slices of the application.
+There are two primary strategies to split a frontend application: horizontally or vertically. In both approaches, a micro frontend is defined to represent a complete subdomain, which can be categorized as core, supporting, or generic, as introduced in @section_ddd. A horizontal split implies a one-to-many relationship between views and micro frontends, where a single view is made up of multiple micro frontends, each responsible for a specific feature within that view. In contrast, a vertical split establishes a many-to-one relationship, where one micro frontend is responsible for managing the functionality of several views.
 
 === Horizontal-Split
 
-In this approach, micro frontends coexist within the same view, each responsible for a specific section of the page. For instance, in a product detail view (as illustrated in @figure_horizontal_split), three micro frontends managed by the product team, the recommendation team, and the checkout team collaborate to present a unified user interface within a single page.
+In this approach, many micro frontends coexist within the same view, each responsible for a specific section of the page. For instance, in a product detail view (as illustrated in @figure_horizontal_split), three micro frontends managed by the product team, the recommendation team, and the checkout team collaborate to present a unified user interface within a single page.
+
+#figure(
+  image("/assets/horizontal_split_web.png"),
+  caption: [A product detail view composed of three micro frontends.],
+) <figure_horizontal_split>
 
 Horizontal-split architecture is often chosen when there is a requirement for reusable micro frontends across different pages within the application. By supporting granular modularization, this method not only enhances reusability and flexibility but also promotes more efficient resource usage. Additionally, this approach proves particularly beneficial in scenarios where multiple teams are working simultaneously on the application, as it allows for the easy division of subdomains into smaller, manageable units.
 
@@ -20,15 +25,16 @@ Since each micro frontend functions as an isolated component of the user interfa
 
 Despite its benefits, implementing a horizontal-split architecture presents considerable challenges. It demands strong governance, regular reviews, and effective communication among teams to ensure that each micro frontend maintains its proper boundaries. Additionally, the number of micro frontends within the same view needs to be limited. Over-engineering can lead to an excessive number of small micro frontends, blurring the line between a micro frontend (a business subdomain) and a component (a technical solution for reusability). This can lead to increased overhead, ultimately outweighing the potential advantages.
 
-#figure(image("/assets/horizontal_split_web.png"),
-  caption: [A product detail view composed of three micro frontends.]  
-) <figure_horizontal_split>
-
 === Vertical-Split
 
-The vertical-split approach divides an application into multiple slices, with each team managing a specific subset within these slices. For instance, as illustrated in @figure_vertical_split, the recommendation team is responsible for the products overview page, which includes displaying new and recommended products to customers. While the product team handles the product detail view, designing an interface that provides detailed product information such as descriptions, options, and images.
+The vertical-split approach divides an application into multiple slices, with each team managing a specific subset within these slices. For instance, as illustrated in @figure_vertical_split, the recommendation team is responsible for the products overview page, which includes displaying new and recommended products to customers. While the product team handles the product detail view, including all specific information about a product.
 
-A key component of this architecture is the application shell, which is responsible for loading and unloading micro frontends. It is the first to be downloaded when the application is accessed and remains a persistent part of the application. The shell typically includes essential elements that appear on every page of the application, such as the navigation bar, footer, or general logic as a user authentication system.
+#figure(
+  image("/assets/vertical_split_web.png"),
+  caption: [User workflow between two micro frontends.],
+) <figure_vertical_split>
+
+A key component of this architecture is the application shell, which is responsible for loading and unloading micro frontends. It is the first to be downloaded when the application is accessed and remains a persistent part of the application. The shell typically includes essential elements that appear on every page of the application, such as the navigation bar, footer, or general logic such as a user authentication system.
 
 The vertical-split architecture is particularly beneficial for projects that require a consistent user interface across different sections. By loading the shell first, users experience a more responsive application, as the core interface elements become immediately available while other parts continue to load in the background. Additionally, each team is responsible for managing the complete user experience for their assigned subdomain, leading to a cohesive and unified interface throughout the application.
 
@@ -36,19 +42,16 @@ Moreover, for teams experienced in developing single-page applications, transiti
 
 Vertical-splits also bring notable challenges that require careful attention. A primary concern is the potential for redundant efforts and code duplication. Without careful management and coordination, individual micro frontends within a vertical-split architecture might independently develop their versions of common functions, such as data fetching or error handling. This redundancy not only increases the maintenance workload but also results in a larger, more complicated codebase. Managing these redundant components can become a complex and time-consuming task, reducing the efficiency that vertical-split architecture is intended to achieve.
 
-Moreover, since a micro frontend represents multiple slices within the application, its failure could potentially impact a large number of users. For instance, in an online shopping application, as illustrated in @figure_vertical_split, if the product detail page encounters an issue or becomes unavailable, customers will be unable to view products or make purchases. This could result in significant sales losses and a negative user experience.
+Moreover, since a micro frontend represents multiple slices within the application, its failure could potentially impact a large number of users. For instance, in the online shopping application mentioned earlier, if the product detail page encounters an issue or becomes unavailable, customers will be unable to view products and make purchases. This could result in significant sales losses and a negative user experience.
 
-#figure(image("/assets/vertical_split_web.png"),
-  caption: [User workflow between two micro frontends.],
-) <figure_vertical_split>
 
 == Composition and Routing
 
-There are three primary composition types: server-side composition, edge-side composition, and client-side composition. The definition of a micro frontend affects how they are composed into a view. Vertical-split architecture supports only client-side composition, whereas horizontal-split architecture can accommodate all three types. These composition methods correspond to three routing approaches, determined by where the routing logic is executed: server-side routing, edge-side routing, and client-side routing. Before exploring the details of each composition and routing mechanism, the difference between build-time integration and runtime integration will first be discussed.
- 
+There are three primary composition types: server-side composition, edge-side composition, and client-side composition. The strategy used to divide the application impacts how different parts of the frontend are assembled into a view. Vertical-split approach supports only client-side composition, whereas horizontal-split approach can accommodate all three types. These composition methods correspond to three routing approaches, determined by where the routing logic is executed: server-side routing, edge-side routing, and client-side routing. Before exploring the details of each composition and routing mechanism, the difference between build-time integration and runtime integration will first be discussed.
+
 === Build-time vs. Runtime Integration
 
-Build-time integration refers to the process where micro frontends are integrated during the build phase. In this approach, individual micro frontends are combined into a single deployable bundle before the application is served to the user. While this method allows for independence during the development stage, it results in coupling at the release stage. Consequently, even a minor change in a single micro frontend may necessitate recompiling the entire application, creating a distributed monolith architecture that contradicts the fundamental principles of micro frontend architecture.
+Build-time integration refers to the process where micro frontends are integrated during the build phase. In this approach, individual micro frontends are combined into a single deployable bundle before the application is served to the user. While this method allows for independence during the development stage, it results in coupling at the release stage. Consequently, even a minor change in a single micro frontend may necessitate recompiling the entire application, creating a modular monolith architecture that contradicts the fundamental principles of micro frontend architecture.
 
 In contrast, runtime integration involves assembling the micro frontends dynamically when the application is loaded or accessed by the user. This approach helps avoid issues such as lock-step deployment, thereby maintaining the independence of each micro frontend. Given these considerations, runtime integration is generally preferred over build-time integration to prevent unnecessary coupling.
 
@@ -81,7 +84,7 @@ Since components are loaded and updated in real-time, users can interact with th
 By handling routing in the browser, once the initial application is loaded, all subsequent navigations are managed by the client. This results in faster transitions between views, as there is no need to reload the entire page from the server. Additionally, this routing strategy supports complex routing structures such as flat routes and nested routes.
 
 - Flat Routing: This is a straightforward approach where each route corresponds directly to a specific view without any hierarchy (@figure_flat_nested_routing, left). This creates a one-to-one relationship between the URL and the view, making flat routing simpler to implement, manage, and understand.
-  
+
 - Nested Routing: This allows for more complex route structures by enabling routes to be nested within other routes. A parent route can have one or more child routes, allowing for hierarchical navigation within the application (@figure_flat_nested_routing, right). While nested routing offers greater flexibility, it also adds complexity to the routing logic and requires more careful management of route states.
 
 However, there are challenges associated with client-side composition. Initial load times can be slower because the browser needs to fetch and render multiple components, resulting in a delay before the user sees the fully assembled interface. Additionally, since the composition task is handled by the client, it can consume more resources on the user's device, which could be an issue for users with less powerful hardware or slower internet connections.
@@ -90,7 +93,7 @@ Moreover, when @seo is a major concern, alternative composition methods should b
 
 #figure(
   image("/assets/flat_nested_routing.png"),
-  caption: [Flat and nested routing strategies in client-side routing.]
+  caption: [Flat and nested routing strategies in client-side routing.],
 ) <figure_flat_nested_routing>
 
 === Universal
@@ -119,7 +122,7 @@ For example, as illustrated in the figure below, two micro frontends can communi
 
 #figure(
   image("/assets/storage_cookies.png"),
-  caption:  [Two micro frontends communicate through cookies during a login process.]
+  caption: [Two micro frontends communicate through cookies during a login process.],
 )
 
 === Event Bus

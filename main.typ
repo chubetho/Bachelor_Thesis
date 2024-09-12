@@ -2,8 +2,8 @@
 #import "utils/header.typ": getHeader
 
 #set document(
-  title: [A Study on Micro Frontend Architecture and Its Impact], 
-  author: "Tan Phat Nguyen"
+  title: [A Study on Micro Frontend Architecture and Its Impact],
+  author: "Tan Phat Nguyen",
 )
 
 #set text(font: "New Computer Modern", lang: "en", size: 12pt)
@@ -17,7 +17,7 @@
 #set page(
   margin: (right: 3cm, left: 3cm, top: 4cm, bottom: 4cm),
   header: getHeader(),
-  numbering: "i"
+  numbering: "i",
 )
 
 #include "templates/abstract.typ"
@@ -25,12 +25,12 @@
 #set outline(indent: true, fill: repeat("  .  "))
 
 #show (heading): it => [
-  #if(it.level == 1){
+  #if (it.level == 1) {
     set text(24pt)
     v(1em)
     it
     v(1em)
-  }else{
+  } else {
     v(1.5em)
     it
     v(0.75em)
@@ -41,14 +41,14 @@
   fill: luma(240),
   inset: 12pt,
   radius: 4pt,
-  width: 100%
+  width: 100%,
 )
 
 #show raw.where(block: false): box.with(
   fill: luma(240),
   inset: (top: 1.5pt, bottom: 1.5pt, left: 3pt, right: 3pt),
   radius: 2pt,
-  baseline: 10%
+  baseline: 10%,
 )
 
 // #show figure.caption: it => [#text(size: 0.95em)[#it]]
@@ -61,11 +61,14 @@
 
 #show outline.entry.where(level: 1): it => {
   v(16pt, weak: true)
-  link(it.element.location(), strong({
-    it.body
-    h(1fr)
-    it.page
-  }))
+  link(
+    it.element.location(),
+    strong({
+      it.body
+      h(1fr)
+      it.page
+    }),
+  )
 }
 
 #set quote(block: true)

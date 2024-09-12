@@ -1,4 +1,4 @@
-#import "@preview/glossarium:0.4.1": glspl 
+#import "@preview/glossarium:0.4.1": glspl
 
 = Introduction
 
