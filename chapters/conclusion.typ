@@ -4,8 +4,6 @@ In this chapter, the results of the experiment are evaluated and compared with t
 
 Following this comparison, the four key aspects affected by adopting micro frontend architecture, as they relate to the first research question, are discussed.
 
-The source code for both the micro frontends and monolithic versions is available in the repositories @nguyen_DKLB_2024 and @nguyen_DKLB_Monolith_2024.
-
 == Comparison of Development Cycle
 
 The table below outlines the key differences in the development cycle between the micro frontend and monolithic @spa approaches.
@@ -76,7 +74,7 @@ The table below outlines the key differences in the development cycle between th
       However, only the pipeline responsible for a specific micro frontend will be triggered when changes are made to that micro frontend.
     ],
     [
-      The @ci steps are mostly identical in both approaches. But in @spa approach, having a single configuration file for @ci results in a shorter pipeline runtime.
+      The @ci steps are mostly identical in both approaches. But in the @spa approach, having a single configuration file for @ci results in a shorter pipeline runtime.
 
       However, as any modification in any part of the application will trigger the pipeline for the entire application.
     ],
@@ -92,31 +90,33 @@ Overall, the @spa approach is simpler, with fewer directories, configurations, a
 
 == Impact on Flexibility, Maintainability, Scalability, and Performance
 
-Based on the results of the experiment, this section will discuss how these four aspects of a web application are impacted by adopting micro frontend architecture.
+Based on the results of the experiment, this section will discuss how these four aspects of the implemented web application are impacted by adopting micro frontend architecture.
 
 === Flexibility
 
 The `home` and `lotto` micro frontends offer the flexibility to use different dependencies during development. For example, the `home` micro frontend can use `zod` for schema validation, while the `lotto` micro frontend can utilize `valibot`. Furthermore, if a new frontend framework is chosen in the future to replace Vue.js, it can be applied incrementally in the `home` application, while the `lotto` application continues using Vue.js, ensuring that the overall functionality of the application remains unaffected during the transition.
 
-Additionally, new features or patches can be quickly applied at runtime without disrupting the other. If, during an update, the updated micro frontend becomes temporarily unavailable, the host application will detect the issue and navigate the user to an error page, providing clear and appropriate information about the disruption.
+Additionally, new features or patches can be quickly applied or roll-backed at runtime without disrupting the other. If, during an update, the updated micro frontend becomes temporarily unavailable, the host application will detect the issue and navigate the user to an error page, providing clear and appropriate information about the disruption.
 
 However, this flexibility introduces complexity in maintaining unified functionality across micro frontends, as different libraries may not behave consistently. Additionally, if the choice of a UI library is not carefully planned from the planning stage, the application may suffer from inconsistent styling. These drawbacks can result in a poor user experience.
 
 === Maintainability
 
-The frontend is divided into `home` and `lotto` modules, with each module located in its directory. This modular structure simplifies the management and maintenance of the overall system by allowing developers to focus on specific micro frontends without needing to understand the entire application. This approach makes onboarding new developers more efficient, as they can work on individual components without having to grasp the full scope from the beginning. It also reduces the likelihood of introducing unintentional bugs or inconsistencies when making changes.
+The frontend is divided into `home` and `lotto` modules, with each module located in its directory. This modular structure simplifies the management and maintenance of the overall system by allowing developers to focus on specific micro frontends without needing to understand the entire application. It also facilitates the isolation of bugs within a specific micro frontend, making them easier to identify and resolve, while minimizing the risk of introducing unintended errors or inconsistencies caused by changes made by other teams.
 
-This separation, though beneficial, can result in redundancy in certain areas. For instance, shared logic, such as the fetch function used to retrieve gaming history quotes, might be duplicated across multiple micro frontends, which violates the DRY (Don't Repeat Yourself) principle. Additionally, maintaining consistency becomes more challenging, as refactoring or updating shared logic may not always be synchronized across all micro frontends. This can lead to a potential lack of similarity and increased maintenance efforts over time.
+While this separation offers advantages, it can also lead to redundancy in some areas. For example, shared logic, such as the fetch function for retrieving gaming history quotes, may be replicated across different micro frontends, conflicting with the DRY (Don't Repeat Yourself) principle. Moreover, ensuring consistency becomes more difficult, as refactoring or updating shared logic may not be uniformly applied across all micro frontends. This inconsistency, coupled with the complexity of managing multiple build processes and deployment pipelines, tends to increase maintenance efforts over time.
 
 === Scalability
 
-If the `lotto` module experiences a surge in traffic, it can be scaled independently, optimizing resource usage by ensuring that only the necessary parts of the system receive additional resources. The team responsible for this micro frontend can tailor the scaling strategy based on its specific workload or user interaction patterns, allowing for a more efficient and responsive system.
+Due to the isolation provided by the architecture, two teams can work simultaneously on the `home` and `lotto` micro frontends without impacting each other's progress. Additionally, if the `lotto` module experiences a spike in traffic, it can be scaled independently, optimizing resource usage by ensuring that only the necessary parts of the system receive additional resources.
 
 Independent scaling can introduce increased infrastructure overhead. Each micro frontend may require its own hosting and monitoring, which adds complexity and raises operational costs. Additionally, common backend services, such as databases, may become bottlenecks if not properly optimized to handle the demands of independently scaled micro frontends. This can result in performance issues that impact the entire application, despite the modularity of the frontend components.
 
 === Performance
 
-To evaluate performance, the open-source tool Sitespeed.io is used to analyze website speed based on performance best practices @_SiteSpeedIO_. The table below compares the micro frontends and @spa versions, with metrics gathered from the homepage of the application using the Chrome browser over five iterations. The results are color-coded: blue for informational data, green for passing, yellow for warnings, and red for poor performance.
+The Module Federation approach allows micro frontends to be loaded on demand, meaning that `lotto` is only loaded when the user navigates to it, reducing initial load times for the `home` micro frontend. However, the integration of multiple micro frontends at runtime, along with potential duplications in each micro frontend, introduces latency because the bundle size increases. As a result, performance can be impacted, particularly when handling larger bundles during runtime.
+
+To better evaluate performance, the open-source tool Sitespeed.io is used to analyze website speed based on performance best practices @_SiteSpeedIO_. The table below compares the micro frontends and @spa versions, with metrics gathered from the homepage of the application using the Chrome browser over five iterations. The results are color-coded: blue for informational data, green for passing, yellow for warnings, and red for poor performance.
 
 #{
   let tred = c => text(weight: "bold", fill: red, c)

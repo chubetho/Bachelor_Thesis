@@ -18,43 +18,61 @@ A table outlining the advantages and disadvantages across the four aspects of fl
     [], [Advantages], [Disadvantages],
     flip[Flexibility],
     [
-      Independent development and deployment of frontend components, reducing downtime and enabling parallel work.
+      *Technology Agnostic*: Teams can choose different technologies or frameworks that best suit their micro frontend, enabling the adoption of new technologies without rewriting the entire application.
+
+      *Independent Deployment*: Micro frontends can be deployed independently, allowing for faster feature releases and rollbacks.
     ],
     [
-      Introduces added complexity, particularly in maintaining consistent functionality and ensuring a seamless user experience across the different micro frontends.
+      *Inconsistent User Interface:* Without strict guidelines, the look and feel across micro frontends can become inconsistent, affecting the overall user experience.
+      
+      *Integration Challenges:* Combining different technologies and frameworks requires careful planning to ensure seamless interaction between micro frontends.
     ],
 
     flip[Maintainability],
     [
-      Smaller, modular codebases improve maintainability, making it easier to manage, and onboard new developers.
+      *Modular Codebase*: Breaking the frontend into smaller, manageable pieces makes the codebase easier to understand and maintain. Each team can focus on a specific module without affecting others.
+      
+      *Independent Updates*: Teams can update or refactor their micro frontend without coordinating with other teams, reducing the risk of introducing bugs into unrelated parts of the application.
+      
+      *Isolation of Issues*: Bugs are confined to specific micro frontends, making it easier to locate and fix problems.
     ],
     [
-      Managing multiple repositories or codebases can lead to fragmented maintenance efforts and potential duplication.
+      *Complex Dependency Management:* Managing shared libraries and ensuring consistency across micro frontends can become challenging.
+      
+      *Overhead in Tooling:* Maintaining multiple build processes, repositories, or deployment pipelines can increase the complexity of the development environment.
     ],
 
     flip[Scalability],
     [
-      Enables independent scaling of specific frontend components, optimizing resource usage.
+      *Team Scalability*: Multiple teams can work in parallel on different micro frontends without interfering with each other, enhancing productivity.
+      
+      *Performance Scaling*: Specific micro frontends can be scaled independently based on load and performance needs, optimizing resource usage.
+      
+      *Modular Growth*: New features can be added as separate micro frontends without impacting the existing system.
     ],
     [
-      Potential for increased infrastructure overhead, as each micro frontend may require separate hosting and monitoring.
+      *Infrastructure Complexity:* Scaling multiple micro frontends may require sophisticated infrastructure and orchestration tools.
+      
+      *Network Overhead*: Increased number of services can lead to more network requests, which might impact performance if not managed properly.
     ],
 
     flip[Performance],
     [
-      More efficient loading, with the possibility to load only necessary parts of the application, improving user experience.
+      *Optimized Loading:* Micro frontends allow for lazy loading of components, reducing initial load times by fetching only what's necessary.
     ],
     [
-      Initial setup may be complex, with potential performance challenges around integration and communication between micro frontends.
+      *Increased Bundle Size*: Different micro frontends might include duplicate dependencies, increasing the overall application size.
+      
+      *Runtime Overhead:* Assembling multiple micro frontends at runtime can introduce latency, especially if not efficiently managed.
     ],
   )
 }
 
 The table above indicates that a micro frontend architecture can effectively address the challenges and limitations of the current monolithic system in the @dklb project. This approach introduces greater flexibility in development and deployment, while also improving maintainability and scalability for individual parts of the frontend. These characteristics align well with agile methodologies, promoting iterative development and enabling faster delivery. Moreover, as highlighted in the research by Männistö et al., even small teams can leverage the benefits of this architecture provided @mannisto_ExperiencesFrameworklessMicroFrontend_2023.
 
-However, adopting a micro frontend architecture introduces additional complexity in management and monitoring, particularly in ensuring smooth integration of components and a consistent user experience. Additionally, the decentralized nature of this approach requires further optimization to maintain adequate performance levels.
+However, adopting a micro frontend architecture introduces additional complexity in management and monitoring, particularly in ensuring a smooth integration of components and a consistent user experience. Additionally, the decentralized nature of this approach requires further optimization to maintain adequate performance levels.
 
-In conclusion, micro frontend architecture presents a promising solution for large-scale web applications, delivering notable advantages while also introducing certain challenges. The decision to implement this approach should be driven by the project's specific requirements, carefully considering whether the additional complexities are justified by the benefits. While this study has examined crucial aspects of the web application development process, further in-depth analysis is necessary to fully assess and optimize its potential for the @dklb project.
+In conclusion, micro frontend architecture presents a promising solution for web applications, delivering notable advantages while also introducing certain challenges. The decision to implement this approach should be driven by the project's specific requirements, carefully considering whether the additional complexities are justified by the benefits. While this study has examined crucial aspects of the web application development process, further in-depth analysis is necessary to fully assess and optimize its potential for the @dklb project.
 
 == Future Research
 

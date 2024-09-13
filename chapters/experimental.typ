@@ -8,11 +8,11 @@ Note that the code examples presented in this chapter may differ from the actual
 
 == Planning Stage <section_planning_stage>
 
-In this initial stage of the experiment, the current state of the backend for the #gls("dklb", long: true) application will be briefly reviewed. Following this, each step in the decision framework outlined in the @section_decision_framework, will be applied. These steps will collectively provide valuable insights for the upcoming setup stage.
+In this initial stage of the experiment, the current state of the backend for the #gls("dklb", long: true) application will be briefly reviewed. Following this, each step in the decision framework outlined in the @section_decision_framework will be applied. These steps will collectively provide valuable insights for the upcoming setup stage.
 
 === Backend
 
-Fortunately, the backend architecture of the @dklb is already organized as microservices, following #gls("ddd", long: true) principles. In this context, domains such as user, games, and cart are clearly defined. For instance, the games domain is further divided into multiple core subdomains based on specific games. The `/lotto6aus49/**` path interacts exclusively with microservices dedicated to the Lotto game, while the `/eurojackpot/**` path engages with APIs associated with the Eurojackpot game. These distinct separations emphasize that each core subdomain focuses on the unique functionalities within the overall application.
+Fortunately, the backend architecture of the @dklb is already organized as microservices, following #gls("ddd", long: true) principles. For instance, the games domain in this context is divided into multiple core subdomains based on specific games. The `/lotto6aus49/**` path interacts exclusively with microservices dedicated to the Lotto game, while the `/eurojackpot/**` path engages with APIs associated with the Eurojackpot game. These distinct separations emphasize that each core subdomain focuses on the unique functionalities within the overall application.
 
 However, to ensure the experiment is comprehensive, a mocked server that simulates the backend will be set up to handle requests from the micro frontends. While this server could be built using a web framework in any programming language, a JavaScript-based framework will be used to minimize additional setup efforts and maintain consistency with the frontend technologies.
 
@@ -20,15 +20,15 @@ However, to ensure the experiment is comprehensive, a mocked server that simulat
 
 The principles of @ddd offer a strong foundation for implementing a vertical-split strategy for micro frontends. In this approach, each micro frontend aligns with a specific subdomain, such as a particular game, effectively mirroring the microservices architecture established on the backend.
 
-However, to increase the system's flexibility, a horizontal-split strategy will be adopted instead. While the majority of micro frontends will continue to follow a vertical-split, focusing on specific game subdomains, certain functionalities or cross-cutting concerns will be shared across multiple micro frontends. For example, although the homepage and Lotto game are developed in separate micro frontends, the component responsible for displaying Lotto quotes can be exposed and reused within the homepage micro frontend. This adoption of a horizontal-split strategy ensures that the architecture remains adaptable and responsive to diverse requirements.
+However, to increase the system's flexibility, a horizontal-split strategy will be adopted instead. While the majority of micro frontends will continue to follow a vertical-split, focusing on specific game subdomains, certain functionalities or cross-cutting concerns will be shared across multiple micro frontends. For example, although the homepage and Lotto game are developed as separate micro frontends, the component responsible for displaying Lotto quotes from the Lotto micro frontend can be exposed and reused within the homepage micro frontend. This adoption of a horizontal-split strategy ensures that the architecture remains adaptable and responsive to diverse requirements.
 
 === Module Federation
 
-Module Federation has been chosen for its significant potential in the development process. It supports both horizontal and vertical splitting of the application, as well as client-side and server-side composition, providing the flexibility needed to accommodate future requirements with ease. Furthermore, the use of a single frontend framework across the entire application eliminates the dependency management challenges typically encountered with Module Federation, making it an even more advantageous choice.
+Module Federation has been chosen for its significant potential in the development process. It supports both horizontal and vertical splitting of the application, as well as client-side and server-side composition, providing the flexibility needed to accommodate future requirements with ease. Furthermore, the use of a single frontend framework across the entire application partially eliminates the dependency management challenges typically encountered with Module Federation, making it an even more advantageous choice.
 
-In this experiment, client-side composition will be chosen because the potential development teams at MULTA MEDIO are already familiar with @spa development. Additionally, if the application later requires enhanced @seo, faster load times, or improved performance, transitioning from client-side to server-side composition will be straightforward, given that Module Federation already supports this capability. Further details regarding client-side routing will be discussed during the implementation stage.
+Client-side composition is selected to combine with Module Federation because the potential teams for the @dklb rewrite project at MULTA MEDIO are already familiar with @spa development. Additionally, if the application later requires enhanced @seo, faster load times, or improved performance, transitioning from client-side to server-side composition will be straightforward, as Module Federation already supports this capability. Further details regarding client-side routing will be discussed during the implementation stage.
 
-For enabling communication between micro frontends, any methods outlined in @fundamental_communication will be effective. These methods can be easily opted in or out, without the need for upfront planning.
+For enabling communication between micro frontends, any methods outlined in @fundamental_communication will be viable. These methods can be easily opted in or out as needed, without requiring upfront planning.
 
 == Setup Stage
 
@@ -698,12 +698,6 @@ This Docker-based strategy enables the @dklb application to be easily deployed o
 
 In the containerization approach implemented above, each micro frontend is deployed in its container. This design, while flexible, results in increased memory usage, as the memory requirements scale with the number of micro frontend containers. An alternative is to run the host application and all micro frontends only within a single container. As illustrated in @figure_docker_desktop, the multi-container approach requires around 27MB of memory, whereas the single-container approach needs only about 9MB for the entire frontend. This reduction in memory usage can be advantageous in resource-constrained environments.
 
-However, the single-container approach has trade-offs. Redeploying a micro frontend in this setup can be more cumbersome, as developers must apply the necessary changes, rebuild the micro frontend, and push the built assets to the correct directory in the container, responsible for that micro frontend. In some scenarios, this might even require taking down the entire container, leading to downtime for the whole application. On the other hand, with the multi-container approach, individual containers can be stopped and restarted independently, allowing updates to specific micro frontends without disrupting the entire system. This independence reduces the operational burden on developers and can minimize application downtime.
-
-Several deployment strategies are available that can optimize the deployment process and effectively address the issues previously mentioned. One such strategy is blue-green deployment, which involves the use of two identical production environments, referred to as blue and green. The blue environment handles live traffic, while the green environment remains idle or is used for staging new releases. When a new version is ready, it is deployed to the green environment. After comprehensive testing, traffic is switched to the green environment, allowing for seamless updates. Should any issues arise, traffic can be reverted to the blue environment. This approach ensures minimal downtime during deployments, enhances reliability, and offers quick rollback capabilities @fowler_BlueGreenDeployment_2013.
-
-In this experiment, both single and multi-container approaches are suitable. However, if the @dklb project later decides to adopt a micro frontend architecture and must select one, it will be essential to carefully weigh the importance of memory efficiency against the flexibility and ease of maintenance.
-
 #show image: it => block(radius: 5pt, clip: true)[#it]
 #figure(
   caption: "Memory usage comparison: multi-container vs. single-container approach.",
@@ -711,6 +705,9 @@ In this experiment, both single and multi-container approaches are suitable. How
 )<figure_docker_desktop>
 #show image: it => it
 
+However, the single-container approach has trade-offs. Redeploying a micro frontend in this setup can be more cumbersome, as developers must apply the necessary changes, rebuild the micro frontend, and push the built assets to the correct directory in the container, responsible for that micro frontend. In some scenarios, this might even require taking down the entire container, leading to downtime for the whole application. On the other hand, with the multi-container approach, individual containers can be stopped and restarted independently, allowing updates to specific micro frontends without disrupting the entire system. This independence reduces the operational burden on developers and can minimize application downtime.
+
+Several deployment strategies are available that can optimize the deployment process and effectively address the issues previously mentioned. One such strategy is blue-green deployment, which involves the use of two identical production environments, referred to as blue and green. The blue environment handles live traffic, while the green environment remains idle or is used for staging new releases. When a new version is ready, it is deployed to the green environment. After comprehensive testing, traffic is switched to the green environment, allowing for seamless updates. Should any issues arise, traffic can be reverted to the blue environment. This approach ensures minimal downtime during deployments, enhances reliability, and offers quick rollback capabilities @fowler_BlueGreenDeployment_2013.
 
 == CI/CD Stage
 
@@ -774,14 +771,14 @@ After completing the code integration, the focus shifts to automated deployment.
 #pagebreak()
 == Developer Workflow Optimization
 
-To enhance the developer workflow, a scaffold script is implemented to streamline the creation of new micro frontend applications. Initially, a `.template` directory is established to store the templates for the micro frontend application and the pipeline configuration file. Following this, a lightweight command line interface (CLI) is implemented to prompt the developer for the location and prefix of the micro frontend. The corresponding Dockerfile is then generated, and necessary updates are made to the `docker-compose.yml` file. Finally, the script asks whether to install dependencies or perform the build process.
+To enhance the developer workflow, a scaffold script is implemented to streamline the creation of new micro frontend applications. Initially, a `.template` directory is established to store the templates for the micro frontend application and the pipeline configuration file. Following this, a command line interface (CLI) is implemented to prompt the developer for the location and prefix of the micro frontend. The corresponding Dockerfile is then generated, and necessary updates are made to the `docker-compose.yml` file. Finally, the script asks whether to install dependencies or perform the build process.
 
 #show image: it => block(radius: 5pt, clip: true)[#it]
 #grid(
   columns: (1fr, 1.5fr),
   column-gutter: 10pt,
   figure(
-    caption: [`.template` directory's structure.],
+    caption: [Structure of the `.template` directory.],
     [
       ```
       .templates
@@ -796,7 +793,7 @@ To enhance the developer workflow, a scaffold script is implemented to streamlin
     ],
   ),
   figure(
-    caption: [The scaffold CLI for the creation of new micro frontend applications.],
+    caption: [The scaffold CLI for the creation of new micro frontend application.],
     image("/assets/create_app.png"),
   ),
 )

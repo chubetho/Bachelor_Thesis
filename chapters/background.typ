@@ -25,7 +25,7 @@ Monolithic architecture can still be a practical and viable option, particularly
 
 Microservices architecture is an advanced design approach where independent services are developed around specific business requirements. Each microservice is responsible for a particular functionality, enabling the creation of complex systems through the integration of modular components @newman_BuildingMicroservices2nd_2021.
 
-From an external viewpoint, microservices operate as black boxes, delivering business functionality via network endpoints, such as REST APIs. The internal workings of these services are minimally exposed, ensuring that upstream consumers, whether other microservices or external programs, remain unaffected as long as the interfaces remain consistent.
+From an external viewpoint, microservices operate as black boxes, delivering business functionality via network endpoints, such as REST APIs. The internal workings of these services are minimally exposed, ensuring that upstream consumers, whether other microservices or external programs remain unaffected as long as the interfaces remain consistent.
 
 The concept of microservices has been an important subject of research and development for over a decade. Sam Newman identified five key principles that are crucial for understanding the effectiveness of this architectural approach. These principles include independent deployability, designing services around business domains, each service owning its state, and ensuring that the architecture aligns with the organizational structure.
 

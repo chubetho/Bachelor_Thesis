@@ -4,11 +4,11 @@
 
 Building on the Decision Framework outlined in the previous chapter, this section presents several commonly adopted approaches for implementing micro frontends. The effectiveness and challenges of these approaches often depend on the composition strategy they are paired with. As a result, general benefits and drawbacks will not be discussed here, except in cases where a specific approach has distinct characteristics.
 
-For example, approaches involving server-side and edge-side composition will be demonstrated within the context of a horizontal-split architecture, while those using client-side composition will be examined through the perspective of a vertical-split architecture.
+The following approaches utilizing server-side and edge-side composition will be demonstrated within a horizontal-split strategy, while those employing client-side composition will be explored through a vertical-split strategy.
 
 == Server-Side Includes
 
-@ssi is a server-side scripting language often used in a server-side composition approach, where web pages are constructed on the server by fetching content from various micro frontends before delivering the final page to the user. @ssi accomplishes this by providing a set of specific directives within an HTML file, which the server processes to execute commands such as setting variables, printing the current date and time, or including common elements from other files, like headers or footers, within the page (@_IntroductionServerSide_). This capability makes @ssi particularly useful for maintaining consistency across multiple pages of a website.
+@ssi is a server-side scripting language often used in a server-side composition approach, where web pages are constructed on the server by fetching content from various micro frontends before delivering the final page to the user. @ssi accomplishes this by providing a set of specific directives within an @html file, which the server processes to execute commands such as setting variables, printing the current date and time, or including common elements from other files, like headers or footers, within the page @_IntroductionServerSide_. This capability makes @ssi particularly useful for maintaining consistency across multiple pages of a website.
 
 However, @ssi's utility is generally limited to simpler tasks, as it lacks the flexibility and power required for more complex website architectures. While @ssi is effective at including static components across multiple pages, it is not designed to support dynamic interactions between components within a single page. Since page composition occurs on the server side, any communication between different micro frontends within the view must be routed through the server, typically using REST APIs or similar server-side communication methods. Consequently, @ssi is better suited for basic page assembly tasks rather than for scenarios that demand complex, interactive user interfaces or real-time communication between components.
 
@@ -32,11 +32,12 @@ However, @ssi's utility is generally limited to simpler tasks, as it lacks the f
 
 Additionally, several frameworks are specifically designed to implement micro frontend architectures in combination with server-side composition, such as OpenComponents #footnote[https://opencomponents.github.io/], OneApp from American Express #footnote[https://github.com/americanexpress/one-app], Mosaic from Zalando #footnote[https://www.mosaic9.org/], and Podium #footnote[https://podium-lib.io/]. These frameworks offer more robust solutions for developing modular, scalable frontend applications.
 
+
 == Edge-Side Includes
 
 The primary purpose of @esi, a markup language, is to enable edge-side composition, which allows web pages to be constructed from fragments directly at the edge of the network. The key difference between @esi and @ssi lies in where the page assembly occurs: @esi operates at the network edge, typically within a @cdn, whereas @ssi performs this function on the server-side @_ESIDocument_2004.
 
-However, implementations can vary significantly, with some #glspl("cdn") not supporting @esi at all. In environments where @esi is not natively supported, tools like nginx or Varnish can be employed to mimic @esi's functionality by providing similar edge-side processing capabilities. These tools can intercept requests and dynamically assemble content at the edge. Furthermore, @esi shares some of the same disadvantages as @ssi, such as being more suitable for simple static websites and offering limited communication capabilities between components.
+However, @esi implementations can vary significantly across different #glspl("cdn")  and may not be supported by all. In cases where @esi is unsupported, tools like nginx or Varnish can be employed to mimic @esi's functionality by providing similar edge-side processing capabilities. These tools can intercept requests and dynamically assemble content at the edge. Furthermore, @esi shares some of the same disadvantages as @ssi, such as being more suitable for simple static websites and offering limited communication capabilities between components.
 
 #figure(caption: [An example of using Edge Side Includes.])[
   ```html
@@ -62,7 +63,7 @@ An iframe is an inline frame embedded within a webpage that allows the loading o
 
 Despite the strong isolation benefits provided by iframes, their performance is often criticized by the community for being suboptimal and CPU-intensive, particularly on websites that use multiple iframes. This performance issue, combined with the difficulty of making iframes easily indexable by search engine crawlers, limits their suitability primarily to desktop or intranet applications, as demonstrated by Spotify's use of iframes in their desktop apps @engineering_BuildingFutureOur_2021. Additionally, accessibility concerns arise with iframes. While they can visually integrate seamlessly into a web application, they essentially represent separate small pages within a single view, which can pose significant challenges for accessibility tools like screen readers. These tools must navigate multiple documents, hierarchical information, and varying navigation states within a single page, complicating the user experience for individuals with disabilities.
 
-This method is a type of client-side composition. As explained in @section_decision_framework, this composition strategy starts with the browser downloading a shell application, which manages the loading and unloading of various micro frontends. As illustrated in the figure below, the shell application determines the appropriate @html file path based on the current URL and assigns it as the source of the iframe element.
+This approach is a type of client-side composition. As explained in @section_decision_framework, this composition strategy starts with the browser downloading a shell application, which manages the loading and unloading of various micro frontends. As illustrated in the figure below, the shell application determines the appropriate @html file path based on the current URL and assigns it as the source of the iframe element.
 
 #figure(caption: [An example of using iframe.])[
   ```html
@@ -97,7 +98,7 @@ This method is a type of client-side composition. As explained in @section_decis
 
 Web components are a collection of web platform APIs that enable developers to create reusable and encapsulated custom elements. These components are based on three key specifications: Custom Elements, Shadow DOM, and HTML Templates @_WebComponentsWeb_2024.
 
-- Custom Elements: This set of JavaScript APIs allow developers to define their own HTML elements with custom behaviors. Once defined, these elements can be used just like standard HTML tags.
+- Custom Elements: This set of JavaScript APIs allows developers to define their own HTML elements with custom behaviors. Once defined, these elements can be used just like standard HTML tags.
 
 - Shadow DOM: Another set of JavaScript APIs provides encapsulation by creating a hidden context, a shadow DOM, that includes the internal structure, styles, and behavior of the component. This encapsulation ensures that the component is isolated from the rest of the main DOM, preventing style and script conflicts.
 
@@ -106,6 +107,8 @@ Web components are a collection of web platform APIs that enable developers to c
 While web components provide substantial benefits, they also present certain challenges. The concept of web components has been around for some time, however, full support is only available in modern browsers. To maintain compatibility with older browsers, developers often need to rely on polyfills #footnote[https://remysharp.com/2010/10/08/what-is-a-polyfill]. Additionally, the use of custom elements and the shadow DOM within web components differs from traditional frontend development practices, which may introduce a learning curve for developers who are not yet familiar with these concepts.
 
 Web components are primarily intended for client-side composition, where they are rendered and executed within the browser. However, they can also be integrated with server-side composition by having the server load other parts of the @html, while the web components are executed after the page has been loaded, allowing for a hybrid composition strategy.
+
+At the time of writing this thesis, a framework called Lit #footnote[https://lit.dev/] had already experimentally achieved the ability to render web components on the server-side.
 
 #figure(caption: [An example of using Web Components.])[
   ```js
@@ -150,7 +153,7 @@ Web components are primarily intended for client-side composition, where they ar
 
 == Module Federation
 
-Module Federation, introduced in Webpack 5, is a feature of this popular JavaScript bundler that enables different parts of an application to be treated as separate modules. These modules can be shared and used by other parts of the application at runtime @_Webpack_ @_ModuleFederation_. There are two types of modules:
+Module Federation, introduced in Webpack 5 #footnote[https://webpack.js.org/], is a feature of this popular JavaScript bundler that enables different parts of an application to be treated as separate modules. These modules can be shared and used by other parts of the application at runtime @_ModuleFederation_. There are two types of modules:
 
 - Exposed Module: Also referred to as a remote application, this is a module that is made available for other applications to consume. It can change its behavior at runtime and is typically defined to provide resources such as a component library or utility functions to other parts of the application.
 
