@@ -1,6 +1,6 @@
 #set page(
   paper: "a4",
-  margin: (right: 3cm, left: 3.5cm, top: 2cm, bottom: 3.5cm)
+  margin: (right: 3cm, left: 3.5cm, top: 2cm, bottom: 3.5cm),
 )
 
 #set align(center)
@@ -9,14 +9,14 @@
   #set text(lang: "de")
   Technische Hochschule Würzburg-Schweinfurt\ Fakultät Informatik und Wirtschaftsinformatik
 ]
-  
+
 #v(7em)
 
-#text(1.5em, "Bachelorarbeit")  
+#text(1.5em, "Bachelorarbeit")
 
 #v(2em)
 
-#text(2em, weight: 700, "A Study on Microfrontend Architecture and Its Impact")
+#text(2em, weight: 700, [A Study on Micro Frontend Architecture and Its Impact])
 
 #v(2em)
 
