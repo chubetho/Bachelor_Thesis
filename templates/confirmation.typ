@@ -12,7 +12,7 @@
   #v(6em)
   #align(right)[
     #line(length: 50%)
-    Würzburg, am 13. September 2024 #h(2em)
+    Würzburg, am 13. September 2024 #h(1.25em)
   ]
 
 ]

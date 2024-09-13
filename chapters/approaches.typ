@@ -153,7 +153,7 @@ At the time of writing this thesis, a framework called Lit #footnote[https://lit
 
 == Module Federation
 
-Module Federation, introduced in Webpack 5 #footnote[https://webpack.js.org/], is a feature of this popular JavaScript bundler that enables different parts of an application to be treated as separate modules. These modules can be shared and used by other parts of the application at runtime @_ModuleFederation_. There are two types of modules:
+Module Federation, introduced in Webpack5 #footnote[https://webpack.js.org/], is a feature of this popular JavaScript bundler that enables different parts of an application to be treated as separate modules. These modules can be shared and used by other parts of the application at runtime @_ModuleFederation_. There are two types of modules:
 
 - Exposed Module: Also referred to as a remote application, this is a module that is made available for other applications to consume. It can change its behavior at runtime and is typically defined to provide resources such as a component library or utility functions to other parts of the application.
 

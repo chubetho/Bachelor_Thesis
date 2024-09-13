@@ -62,10 +62,6 @@ The final key concept is that teams in a micro frontend architecture are organiz
 
 Domain-Driven Design (DDD) focuses on the division of a large system into smaller, more manageable services. Introduced by Eric Evans in 2003, @ddd provides a structured approach to software development that closely aligns with business goals @eric_DomainDrivenDesignTackling_2003. Although @ddd introduces a wide range of concepts, this summary will concentrate on a few key elements: domain, subdomain, bounded context, and context mapping. These concepts are illustrated through the example of an online shopping application, as shown in @figure_ddd. The application is structured around four main domains, each containing its subdomains and two bounded contexts.
 
-#figure(
-  image("/assets/ddd.png", width: 90%),
-  caption: [Domain-Driven Design structure of an online shopping application.],
-) <figure_ddd>
 
 The domain represents the specific area of knowledge or activity that a software application is designed to address, including all relevant business logic and rules. In the given example, the domains are order, product, user, and payment.
 
@@ -74,5 +70,10 @@ A subdomain is a smaller, specific part within a domain, categorized into three 
 A bounded context is a defined boundary that separates subdomains within a specific portion of the domain. Within each bounded context, a unique ubiquitous language is used, which may differ from the languages employed in other contexts. In the example, there are two bounded contexts, both containing a subdomain named "detail," but with distinct purposes: one is used for displaying order details, while the other is for displaying product details. Despite these distinctions, relationships can exist between bounded contexts, such as when the order domain requires information from the product domain to process an order. These relationships and interactions between different bounded contexts are referred to as context mapping.
 
 Understanding these concepts is essential for applying @ddd to micro frontends. Further details on how these concepts are implemented in micro frontends will be discussed in @section_decision_framework.
+
+#figure(
+  image("/assets/ddd.png", width: 90%),
+  caption: [Domain-Driven Design structure of an online shopping application.],
+) <figure_ddd>
 
 #pagebreak(weak: true)
